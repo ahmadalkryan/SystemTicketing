@@ -15,7 +15,7 @@ namespace DataAccessLyer.Entities.AppEntities
 
         public string Note { get; set; }
 
-        public int NewStatusID { get; set; }
+      //  public int NewStatusID { get; set; }
 
         public DateTime CreateTime { get; set; }
 
@@ -30,7 +30,7 @@ namespace DataAccessLyer.Entities.AppEntities
         public string UserId { get; set; }
 
         public User _user { get; set; }
-        public int TicketStatusId { get; set; }
+        public int NewStatusId { get; set; }
 
         public TicketStatus _ticketStatus { get; set; }
 

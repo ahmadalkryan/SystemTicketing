@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class fist : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DaviceCategories",
+                name: "DeviceCategory",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -22,11 +22,11 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DaviceCategories", x => x.ID);
+                    table.PrimaryKey("PK_DeviceCategory", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "Role",
                 columns: table => new
                 {
                     id = table.Column<string>(type: "nvarchar(30)", nullable: false),
@@ -34,11 +34,11 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.id);
+                    table.PrimaryKey("PK_Role", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketsStatus",
+                name: "TicketStatus",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -47,14 +47,14 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketsStatus", x => x.id);
+                    table.PrimaryKey("PK_TicketStatus", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
-                    user_id = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    user_id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Department = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(20)", nullable: false),
@@ -62,11 +62,11 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.user_id);
+                    table.PrimaryKey("PK_User", x => x.user_id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tickets",
+                name: "Ticket",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -81,16 +81,16 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.PrimaryKey("PK_Ticket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tickets_DaviceCategories_DeviceCtegoryID",
+                        name: "FK_Ticket_DeviceCategory_DeviceCtegoryID",
                         column: x => x.DeviceCtegoryID,
-                        principalTable: "DaviceCategories",
+                        principalTable: "DeviceCategory",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_Tickets_TicketsStatus_TicketStatusId",
+                        name: "FK_Ticket_TicketStatus_TicketStatusId",
                         column: x => x.TicketStatusId,
-                        principalTable: "TicketsStatus",
+                        principalTable: "TicketStatus",
                         principalColumn: "id");
                 });
 
@@ -98,26 +98,26 @@ namespace DataAccessLayer.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    user_id = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    user_id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Role_id = table.Column<string>(type: "nvarchar(30)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRole", x => new { x.Role_id, x.user_id });
                     table.ForeignKey(
-                        name: "FK_UserRole_Roles_Role_id",
+                        name: "FK_UserRole_Role_Role_id",
                         column: x => x.Role_id,
-                        principalTable: "Roles",
+                        principalTable: "Role",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_UserRole_Users_user_id",
+                        name: "FK_UserRole_User_user_id",
                         column: x => x.user_id,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "user_id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notifictions",
+                name: "Notifiction",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -126,91 +126,90 @@ namespace DataAccessLayer.Migrations
                     IsRead = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     sentAt = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
                     TicketID = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<string>(type: "nvarchar(20)", nullable: false)
+                    UserID = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notifictions", x => x.Id);
+                    table.PrimaryKey("PK_Notifiction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notifictions_Tickets_TicketID",
+                        name: "FK_Notifiction_Ticket_TicketID",
                         column: x => x.TicketID,
-                        principalTable: "Tickets",
+                        principalTable: "Ticket",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Notifictions_Users_UserID",
+                        name: "FK_Notifiction_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "user_id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketsTrace",
+                name: "TicketTrace",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Note = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    NewStatusID = table.Column<int>(type: "int", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
                     UpdateTime = table.Column<DateTime>(type: "datetime2(7)", nullable: true),
                     TicketID = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    TicketStatusId = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    NewStatusId = table.Column<int>(type: "int", nullable: false),
                     StatusID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketsTrace", x => x.Id);
+                    table.PrimaryKey("PK_TicketTrace", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TicketsTrace_TicketsStatus_TicketStatusId",
-                        column: x => x.TicketStatusId,
-                        principalTable: "TicketsStatus",
+                        name: "FK_TicketTrace_TicketStatus_NewStatusId",
+                        column: x => x.NewStatusId,
+                        principalTable: "TicketStatus",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_TicketsTrace_Tickets_TicketID",
+                        name: "FK_TicketTrace_Ticket_TicketID",
                         column: x => x.TicketID,
-                        principalTable: "Tickets",
+                        principalTable: "Ticket",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TicketsTrace_Users_UserID",
+                        name: "FK_TicketTrace_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "Users",
+                        principalTable: "User",
                         principalColumn: "user_id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifictions_TicketID",
-                table: "Notifictions",
+                name: "IX_Notifiction_TicketID",
+                table: "Notifiction",
                 column: "TicketID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifictions_UserID",
-                table: "Notifictions",
+                name: "IX_Notifiction_UserID",
+                table: "Notifiction",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_DeviceCtegoryID",
-                table: "Tickets",
+                name: "IX_Ticket_DeviceCtegoryID",
+                table: "Ticket",
                 column: "DeviceCtegoryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_TicketStatusId",
-                table: "Tickets",
+                name: "IX_Ticket_TicketStatusId",
+                table: "Ticket",
                 column: "TicketStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TicketsTrace_TicketID",
-                table: "TicketsTrace",
+                name: "IX_TicketTrace_NewStatusId",
+                table: "TicketTrace",
+                column: "NewStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketTrace_TicketID",
+                table: "TicketTrace",
                 column: "TicketID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TicketsTrace_TicketStatusId",
-                table: "TicketsTrace",
-                column: "TicketStatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TicketsTrace_UserID",
-                table: "TicketsTrace",
+                name: "IX_TicketTrace_UserID",
+                table: "TicketTrace",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
@@ -223,28 +222,28 @@ namespace DataAccessLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Notifictions");
+                name: "Notifiction");
 
             migrationBuilder.DropTable(
-                name: "TicketsTrace");
+                name: "TicketTrace");
 
             migrationBuilder.DropTable(
                 name: "UserRole");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "Ticket");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Role");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "DaviceCategories");
+                name: "DeviceCategory");
 
             migrationBuilder.DropTable(
-                name: "TicketsStatus");
+                name: "TicketStatus");
         }
     }
 }

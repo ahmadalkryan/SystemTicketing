@@ -43,7 +43,7 @@ namespace DataAccessLyer.Context
 
             modelBuilder.Entity<Ticket>(t =>
             {
-                t.ToTable("Tickets").HasKey(t => t.Id);
+                t.ToTable("Ticket").HasKey(t => t.Id);
                 t.Property(t => t.Id).ValueGeneratedOnAdd()
                 .HasColumnName("Id");
                 t.Property(t => t.TicketNumber).HasColumnName("TicketNumber").IsRequired();
@@ -65,7 +65,7 @@ namespace DataAccessLyer.Context
             });
             modelBuilder.Entity<DeviceCategory>(d =>
             {
-                d.ToTable("DaviceCategories").HasKey(t => t.Id);
+                d.ToTable("DeviceCategory").HasKey(t => t.Id);
                 d.Property(t => t.Id).ValueGeneratedOnAdd().HasColumnName("ID");
 
                 d.Property(t => t.CategoryName).HasColumnType("nvarchar(30)").
@@ -78,7 +78,7 @@ namespace DataAccessLyer.Context
             });
             modelBuilder.Entity<TicketStatus>(t =>
             {
-                t.ToTable("TicketsStatus").HasKey(d => d.Id);
+                t.ToTable("TicketStatus").HasKey(d => d.Id);
                 t.Property(t => t.Id).ValueGeneratedOnAdd().HasColumnName("id");
                 t.Property(t => t.StatusName).HasConversion<string>()
                 .HasColumnName("Name").IsRequired().HasColumnType("nvarchar(10)");
@@ -86,7 +86,7 @@ namespace DataAccessLyer.Context
             });
             modelBuilder.Entity<Notifiction>(t =>
             {
-             t.ToTable("Notifictions").HasKey(t=>t.Id);
+             t.ToTable("Notifiction").HasKey(t=>t.Id);
                 t.Property(t=>t.Id).ValueGeneratedOnAdd ().HasColumnName("Id");
 
                 t.Property(t => t.Message).HasColumnName("Message").
@@ -100,7 +100,7 @@ namespace DataAccessLyer.Context
                 t.HasOne(t => t._ticket).WithMany(t => t.Notifictions).HasForeignKey(t => t.TicketId).OnDelete(DeleteBehavior.NoAction);
                 t.Property(t => t.TicketId).HasColumnName("TicketID");
                 t.HasOne(t=>t._user).WithMany(t=>t.Notifictions).HasForeignKey(t=>t.UserID).OnDelete(DeleteBehavior.NoAction);
-                t.Property(t => t.UserID).HasColumnName("UserID");
+                t.Property(t => t.UserID).HasColumnName("UserID").HasColumnType("nvarchar(100)");
 
 
 
@@ -108,7 +108,7 @@ namespace DataAccessLyer.Context
             modelBuilder.Entity<TicketTrace>(
                 t =>
                 {
-                    t.ToTable("TicketsTrace").HasKey(t=>t.Id);
+                    t.ToTable("TicketTrace").HasKey(t=>t.Id);
                     t.Property(t => t.Id).ValueGeneratedOnAdd().HasColumnName("Id");
                     t.Property(t => t.Note).HasColumnName("Note").HasColumnType("nvarchar(50)").IsRequired();
                     t.Property(t => t.CreateTime).HasColumnName("CreateTime").HasColumnType("datetime2(7)").IsRequired();
@@ -121,10 +121,10 @@ namespace DataAccessLyer.Context
                     t.HasOne(t=>t._user).WithMany(t=>t.TicketTraces).HasForeignKey(t=>t.UserId).
                     OnDelete(DeleteBehavior.NoAction);
 
-                    t.Property(t => t.UserId).HasColumnName("UserID");
+                    t.Property(t => t.UserId).HasColumnName("UserID").HasColumnType("nvarchar(100)");
 
                     t.HasOne(t => t._ticketStatus).WithMany(t => t.TicketsTraces).
-                    HasForeignKey(t => t.TicketStatusId).OnDelete(DeleteBehavior.NoAction);
+                    HasForeignKey(t => t.NewStatusId).OnDelete(DeleteBehavior.NoAction);
 
 
                 }
@@ -132,9 +132,9 @@ namespace DataAccessLyer.Context
                 );
      
             modelBuilder.Entity<User>(t=>{
-                t.ToTable("Users").HasKey(t=>t.UserId);
+                t.ToTable("User").HasKey(t=>t.UserId);
                 t.Property(t => t.UserId).HasColumnName("user_id")
-                .HasColumnType("nvarchar(20)");
+                .HasColumnType("nvarchar(100)");
                 t.Property(t => t.Name).HasColumnName("name").
                 HasColumnType("nvarchar(20)").IsRequired();
                 t.Property(t => t.Department).HasColumnName("Department")
@@ -154,7 +154,7 @@ namespace DataAccessLyer.Context
                 {
                     t.ToTable("UserRole").HasKey(t => new {t.RoleId,t.UserId});
                     t.HasOne(t=>t._user).WithMany(t=>t.UserRoles).HasForeignKey(t=>t.UserId).OnDelete(DeleteBehavior.NoAction);
-                    t.Property(t => t.UserId).HasColumnName("user_id");
+                    t.Property(t => t.UserId).HasColumnName("user_id").HasColumnType("nvarchar(100)");
 
                     t.HasOne(t => t._role).WithMany(t => t.UserRoles).HasForeignKey(t => t.RoleId).OnDelete(DeleteBehavior.NoAction);
                     t.Property(t=>t.RoleId).HasColumnName("Role_id");
@@ -166,7 +166,7 @@ namespace DataAccessLyer.Context
                 t =>
                 {
 
-                    t.ToTable("Roles").HasKey(t=>t.Id);
+                    t.ToTable("Role").HasKey(t=>t.Id);
                     t.Property(t => t.Id).HasColumnName("id").HasColumnType("nvarchar(30)");
                     t.Property(t => t.Name).HasColumnName("Name").HasColumnType("nvarchar(20)").IsRequired();
                 }

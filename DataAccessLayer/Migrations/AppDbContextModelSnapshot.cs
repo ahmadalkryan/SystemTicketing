@@ -43,7 +43,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DaviceCategories", (string)null);
+                    b.ToTable("DeviceCategory", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLyer.Entities.AppEntities.Notifiction", b =>
@@ -76,7 +76,7 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("UserID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("UserID");
 
                     b.HasKey("Id");
@@ -85,7 +85,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Notifictions", (string)null);
+                    b.ToTable("Notifiction", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLyer.Entities.AppEntities.Ticket", b =>
@@ -134,7 +134,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("TicketStatusId");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Ticket", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLyer.Entities.AppEntities.TicketStatus", b =>
@@ -153,7 +153,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketsStatus", (string)null);
+                    b.ToTable("TicketStatus", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLyer.Entities.AppEntities.TicketTrace", b =>
@@ -169,7 +169,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("datetime2(7)")
                         .HasColumnName("CreateTime");
 
-                    b.Property<int>("NewStatusID")
+                    b.Property<int>("NewStatusId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
@@ -184,27 +184,24 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("int")
                         .HasColumnName("TicketID");
 
-                    b.Property<int>("TicketStatusId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("datetime2(7)")
                         .HasColumnName("UpdateTime");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("UserID");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TicketId");
+                    b.HasIndex("NewStatusId");
 
-                    b.HasIndex("TicketStatusId");
+                    b.HasIndex("TicketId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TicketsTrace", (string)null);
+                    b.ToTable("TicketTrace", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLyer.Entities.UserEntities.Role", b =>
@@ -220,13 +217,13 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLyer.Entities.UserEntities.User", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("user_id");
 
                     b.Property<string>("Department")
@@ -251,7 +248,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLyer.Entities.UserEntities.UserRole", b =>
@@ -261,7 +258,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnName("Role_id");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("user_id");
 
                     b.HasKey("RoleId", "UserId");
@@ -311,15 +308,15 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLyer.Entities.AppEntities.TicketTrace", b =>
                 {
-                    b.HasOne("DataAccessLyer.Entities.AppEntities.Ticket", "_ticket")
-                        .WithMany("ticketTraces")
-                        .HasForeignKey("TicketId")
+                    b.HasOne("DataAccessLyer.Entities.AppEntities.TicketStatus", "_ticketStatus")
+                        .WithMany("TicketsTraces")
+                        .HasForeignKey("NewStatusId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLyer.Entities.AppEntities.TicketStatus", "_ticketStatus")
-                        .WithMany("TicketsTraces")
-                        .HasForeignKey("TicketStatusId")
+                    b.HasOne("DataAccessLyer.Entities.AppEntities.Ticket", "_ticket")
+                        .WithMany("ticketTraces")
+                        .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

@@ -1,5 +1,4 @@
-﻿using DataAccessLyer.Entities.AppEntities;
-using DataAccessLyer.Entities.UserEntities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLyer.Context
+namespace Infrastructure.Context
 {
     public class AppDbContext : DbContext
     {
@@ -124,7 +123,7 @@ namespace DataAccessLyer.Context
                     t.Property(t => t.UserId).HasColumnName("UserID").HasColumnType("nvarchar(100)");
 
                     t.HasOne(t => t._ticketStatus).WithMany(t => t.TicketsTraces).
-                    HasForeignKey(t => t.NewStatusId).OnDelete(DeleteBehavior.NoAction);
+                    HasForeignKey(t => t.StatusID).OnDelete(DeleteBehavior.NoAction);
 
 
                 }

@@ -1,5 +1,4 @@
 ﻿using DataAccessLyer.Common;
-using DataAccessLyer.Entities.UserEntities;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLyer.Entities.AppEntities
+namespace Domain.Entities
 {
     public class Notifiction:BaseEntity
     {

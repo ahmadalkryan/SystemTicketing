@@ -1,4 +1,9 @@
-using DataAccessLyer.Context;
+using Application.Common;
+using Application.IRepository;
+using Domain;
+using Infrastructure.Common;
+using Infrastructure.Context;
+using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -13,7 +18,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped(typeof(IAppRepository<>),typeof(AppRepository<>));
+builder.Services.AddScoped<ITicketNumberGenerator, TicketNumberGenerator>();
+builder.Services.AddScoped<TicketNumberResolver>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

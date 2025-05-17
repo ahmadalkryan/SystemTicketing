@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLyer.Entities.AppEntities
+namespace Domain.Entities
 {
     public  class DeviceCategory:BaseEntity
     {

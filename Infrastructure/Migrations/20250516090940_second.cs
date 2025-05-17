@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DataAccessLayer.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class second : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -154,15 +154,14 @@ namespace DataAccessLayer.Migrations
                     UpdateTime = table.Column<DateTime>(type: "datetime2(7)", nullable: true),
                     TicketID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    NewStatusId = table.Column<int>(type: "int", nullable: false),
                     StatusID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TicketTrace", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TicketTrace_TicketStatus_NewStatusId",
-                        column: x => x.NewStatusId,
+                        name: "FK_TicketTrace_TicketStatus_StatusID",
+                        column: x => x.StatusID,
                         principalTable: "TicketStatus",
                         principalColumn: "id");
                     table.ForeignKey(
@@ -198,9 +197,9 @@ namespace DataAccessLayer.Migrations
                 column: "TicketStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TicketTrace_NewStatusId",
+                name: "IX_TicketTrace_StatusID",
                 table: "TicketTrace",
-                column: "NewStatusId");
+                column: "StatusID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketTrace_TicketID",

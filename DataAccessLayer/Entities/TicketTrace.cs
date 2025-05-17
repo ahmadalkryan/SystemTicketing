@@ -1,5 +1,4 @@
 ﻿using DataAccessLyer.Common;
-using DataAccessLyer.Entities.UserEntities;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLyer.Entities.AppEntities
+namespace Domain.Entities
 {
     public  class TicketTrace:BaseEntity
     {
@@ -30,9 +29,10 @@ namespace DataAccessLyer.Entities.AppEntities
         public string UserId { get; set; }
 
         public User _user { get; set; }
-        public int NewStatusId { get; set; }
 
-        public TicketStatus _ticketStatus { get; set; }
+        //public int NewStatusId { get; set; }
+
+        public TicketStatus? _ticketStatus { get; set; }
 
         public int StatusID { get; set; }
     }

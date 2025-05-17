@@ -1,5 +1,6 @@
 using Application.Common;
 using Application.IRepository;
+using Application.Mapping.TicketProfile;
 using Domain;
 using Infrastructure.Common;
 using Infrastructure.Context;
@@ -21,6 +22,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(IAppRepository<>),typeof(AppRepository<>));
 builder.Services.AddScoped<ITicketNumberGenerator, TicketNumberGenerator>();
 builder.Services.AddScoped<TicketNumberResolver>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

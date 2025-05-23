@@ -32,7 +32,7 @@ namespace Infrastructure.Repository
         {
            var result = await _dbSet.FindAsync(id);
             _context.SaveChanges();
-            return  await Exists(id) ? result : null;
+            return await Exists(id) ? result : null;
         }
 
         public async Task<T> Insertasync(T entity)
@@ -66,7 +66,7 @@ namespace Infrastructure.Repository
 
      public async Task<bool> Exists(object  id)
         {
-           var result = await _dbSet.FindAsync(id);
+            var result = await _dbSet.FindAsync(id);
             if(result != null)
             {
                 return true;

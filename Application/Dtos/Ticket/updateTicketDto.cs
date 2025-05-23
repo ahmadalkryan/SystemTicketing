@@ -16,7 +16,8 @@ namespace Application.Dtos.Ticket
 
         public int DeciveCategoryId { get; set; }
 
-        //public DateTime CreatedDate { get; set; }
+       // public DateTime CreatedDate { get; set; }
+
         //public DateTime UpdatedDate { get; set; }
 
     }

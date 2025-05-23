@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.Dtos.common;
+using Application.Dtos.Ticket;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,14 @@ namespace Application.IService
 {
    public interface ITicketService
     {
-        Task<>
+        Task<IEnumerable<TicketDto>>  GetAllTickets();
+        Task<TicketDto>  GetTicketByID(BaseDto<int> dto);
+
+        Task<TicketDto> CreateTicket(CreateTicketDto createTicketDto);
+
+        Task<TicketDto> UpdateTicket(updateTicketDto updateTicketDto);
+
+        Task<TicketDto> DeleteTicket(BaseDto<int> dto);
+
     }
 }

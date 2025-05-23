@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public Ticket()
         {
-            Notifictions =new HashSet<Notifiction>();
+            Notifications =new HashSet<Notification>();
             ticketTraces = new HashSet<TicketTrace>();
         }
         public  string TicketNumber { get; set; }
@@ -23,7 +23,7 @@ namespace Domain.Entities
         public DateTime UpdatedDate { get; set; }
 
         public TicketStatus? _status { get; set; }
-        public ICollection<Notifiction> Notifictions { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
        public int TicketStatusId { get; set; }
 
         public int DeciveCategoryId { get; set; }

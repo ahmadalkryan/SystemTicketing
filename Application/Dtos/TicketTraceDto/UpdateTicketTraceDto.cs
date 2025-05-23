@@ -9,7 +9,7 @@ namespace Application.Dtos.TicketTraceDto
 {
     public class UpdateTicketTraceDto:BaseDto<int>
     {
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         public DateTime CreateTime { get; set; }
 

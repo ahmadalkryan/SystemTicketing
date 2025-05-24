@@ -65,6 +65,14 @@ namespace Infrastructure.Service
            var t = await _repo.FindAsync(x=>x.TicketId == ticketId,x=>x._ticket );
             return _mapper.Map<IEnumerable<TicketTraceDto>>(t);
         }
-       
+
+        public async Task<IEnumerable<TicketTraceDto>> GetTicketTracesForUser(string userId)
+        {
+            var  t= await _repo.FindAsync(x=>x.UserId ==userId ,x=>x._user);
+
+
+            return _mapper.Map<IEnumerable<TicketTraceDto>>(t);
+
+        }
     }
 }

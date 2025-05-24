@@ -26,5 +26,6 @@ namespace Application.IService
 
         Task<IEnumerable<TicketDto>> FilterTicketByDate(FilterDate filterDate);
 
+
     }
 }

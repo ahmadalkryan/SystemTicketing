@@ -21,5 +21,7 @@ namespace Application.IService
 
         Task<TicketTraceDto> DeleteTicket(BaseDto<int> dto);
 
+        Task<IEnumerable<TicketTraceDto>> GetTicketTracesForTicket(int ticketId);
+
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Application.Dtos.common;
 using Application.Dtos.TicketTraceDto;
+using Application.IRepository;
 using Application.IService;
+using AutoMapper;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,29 +14,57 @@ namespace Infrastructure.Service
 {
     public class TicketTraceService : ITicketTraceService
     {
-        public Task<TicketTraceDto> CreateTicket(CreateTicketTraceDto createTicketTraceDto)
+
+        private readonly IAppRepository<TicketTrace> _repo;
+        private readonly IMapper _mapper;
+
+        public TicketTraceService(IAppRepository <TicketTrace> T ,IMapper mapper)
         {
-            throw new NotImplementedException();
+             _repo = T;
+            _mapper = mapper;
         }
 
-        public Task<TicketTraceDto> DeleteTicket(BaseDto<int> dto)
+
+        public async Task<TicketTraceDto> CreateTicket(CreateTicketTraceDto createTicketTraceDto)
         {
-            throw new NotImplementedException();
+           var t = _mapper.Map<TicketTrace>(createTicketTraceDto);
+            await _repo.Insertasync(t);
+
+            return _mapper.Map<TicketTraceDto>(t);
         }
 
-        public Task<IEnumerable<TicketTraceDto>> GetAllTickets()
+        public async Task<TicketTraceDto> DeleteTicket(BaseDto<int> dto)
         {
-            throw new NotImplementedException();
+         
+            var t =  await _repo.GetById(dto.Id);
+
+            await _repo.RemoveAsync(t);
+
+            return _mapper.Map<TicketTraceDto>(t);
         }
 
-        public Task<TicketTraceDto> GetTicketByID(BaseDto<int> dto)
+        public async Task<IEnumerable<TicketTraceDto>> GetAllTickets() => _mapper.Map<IEnumerable<TicketTraceDto>>(await _repo.GetAllAsync());
+       
+
+        public async Task<TicketTraceDto> GetTicketByID(BaseDto<int> dto)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<TicketTraceDto>( await _repo.GetById(dto.Id));
         }
 
-        public Task<TicketTraceDto> UpdateTicket(UpdateTicketTraceDto updateTicketTraceDto)
+        public async Task<TicketTraceDto> UpdateTicket(UpdateTicketTraceDto updateTicketTraceDto)
         {
-            throw new NotImplementedException();
+            var t = _mapper.Map<TicketTrace>(updateTicketTraceDto);
+
+            await _repo.UpdateAsync(t);
+            return _mapper.Map<TicketTraceDto>(t);
+
         }
+
+        public async Task<IEnumerable<TicketTraceDto>> GetTicketTracesForTicket(int ticketId)
+        {
+           var t = await _repo.FindAsync(x=>x.TicketId == ticketId,x=>x._ticket );
+            return _mapper.Map<IEnumerable<TicketTraceDto>>(t);
+        }
+       
     }
 }

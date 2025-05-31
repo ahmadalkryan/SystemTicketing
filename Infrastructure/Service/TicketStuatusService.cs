@@ -27,7 +27,7 @@ namespace Infrastructure.Service
         }
 
 
-        public async Task<TicketStatusDto> CreateTicketStatus(CreateTicketStatusDto createTicketStatusDto)
+        public async Task<TicketStatusDto> CreateTicketstatus(CreateTicketStatusDto createTicketStatusDto)
         {
              var t = _mapper.Map<TicketStatus>(createTicketStatusDto);
             await _repo.Insertasync(t);
@@ -61,6 +61,9 @@ namespace Infrastructure.Service
             return _mapper.Map<TicketStatusDto>(t);
         }
 
-       
+        Task<TicketStatusDto> ITicketStausService.CreateTicketStatus(CreateTicketStatusDto createTicketStatusDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

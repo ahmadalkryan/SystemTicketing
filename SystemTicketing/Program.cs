@@ -1,57 +1,51 @@
-using Application.Common;
 using Application.IRepository;
-using Application.IService;
-using Application.Mapping.TicketProfile;
-using Domain;
-using Infrastructure.Common;
-using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Context;
 using Infrastructure.Repository;
-using Infrastructure.Service;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using System;
-using Application.Mapping;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ≈÷«›… AutoMapper „—… Ê«Õœ…
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-//builder.Services.AddAutoMapper(typeof(TicketTraceProfile).Assembly);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+// ≈⁄œ«œ«  ﬁ«⁄œ… «·»Ì«‰« 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+// ≈⁄œ«œ«  «· Õﬂ„
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// ≈⁄œ«œ«  Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-//injection 
-builder.Services.AddScoped(typeof(IAppRepository<>),typeof(AppRepository<>));
-builder.Services.AddScoped<ITicketNumberGenerator, TicketNumberGenerator>();
-builder.Services.AddScoped<TicketNumberResolver>();
-builder.Services.AddScoped<ITicketService,TicketService>();
-builder.Services.AddScoped<ITicketTraceService,TicketTraceService>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<ITicketStausService,TicketStuatusService>();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My_API", Version = "v1" });
+});
 
+// Õﬁ‰ «·Œœ„« 
+builder.Services.AddScoped(typeof(IAppRepository<>), typeof(AppRepository<>));
+// ... »«ﬁÌ «·Œœ„« 
 
-
-
+// CORS
+builder.Services.AddCors(option => option.AddPolicy("AllowAll",
+    builder => builder.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ŒÿÊ«  Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My_API V1"));
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
+app.UseCors("AllowAll");
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

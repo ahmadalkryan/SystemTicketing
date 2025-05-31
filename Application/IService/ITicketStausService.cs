@@ -19,6 +19,6 @@ namespace Application.IService
         Task<TicketStatusDto> UpdateTicketStatus(UpdateTicketStatusDto updateTicketStatusDto);
 
         Task<TicketStatusDto> DeleteTicketStatus(BaseDto<int> dto);
-        Task<TicketStatusDto> CreateTicketStatus(CreateTicketDto dto);
+        Task<TicketStatusDto> CreateTicketstatus(CreateTicketStatusDto dto);
     }
 }

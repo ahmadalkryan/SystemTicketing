@@ -4,12 +4,13 @@ using Application.Dtos.Notification;
 using Application.Dtos.TicketTraceDto;
 using Application.IService;
 using Application.Serializer;
+using Infrastructure.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SystemTicketing.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class NotificationController : ControllerBase
     {
@@ -40,13 +41,12 @@ namespace SystemTicketing.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<TicketTraceDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<NotificationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> GetTicketTraceById(BaseDto<int> dto)
+        public async Task<IActionResult> GetNotifucatinById(BaseDto<int> dto)
         {
-            var result = await _ticketTraceService.GetTicketByID(dto);
-
+            var result = await _notificationService.GetNotificationByID(dto);
             return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
 
         }

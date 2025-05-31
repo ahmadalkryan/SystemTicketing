@@ -61,5 +61,13 @@ namespace Infrastructure.Service
             await _appRepository.UpdateAsync(n);
             return _mapper.Map<NotificationDto>(n);
         }
+
+         public async Task<bool> IsReadNotification(int id)
+        {
+            BaseDto<int> b = new BaseDto<int> { Id = id };
+            var N = await GetNotificationByID(b);
+
+            return N.IsRead ? true : false;
+        }
     }
 }

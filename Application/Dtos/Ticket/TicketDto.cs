@@ -13,6 +13,7 @@ namespace Application.Dtos.Ticket
         public string Description { get; set; }
 
         public string AttachmentPath { get; set; }
+        public int TicketStatusId { get; set; }
 
         public int DeciveCategoryId { get; set; }
         public DateTime CreatedDate { get; set; }

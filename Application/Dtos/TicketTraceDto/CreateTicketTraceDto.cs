@@ -12,7 +12,7 @@ namespace Application.Dtos.TicketTraceDto
 
        // public DateTime CreateTime { get; set; }
 
-        public DateTime? UpdateTime { get; set; }
+       // public DateTime? UpdateTime { get; set; }
 
         
 

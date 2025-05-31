@@ -20,5 +20,6 @@ namespace Application.IService
         Task<NotificationDto> UpdateNotification(UpdateNotificationDto updateNotificationDto );
 
         Task<NotificationDto> DeleteNotifiaction(BaseDto<int> dto);
+        Task<bool> IsReadNotification(int id);
     }
 }

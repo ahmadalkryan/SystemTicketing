@@ -20,7 +20,7 @@ namespace Application.IService
 
         Task<TicketDto> DeleteTicket(BaseDto<int> dto);
 
-        Task<TicketDto> FilterTicket(FilterTicket filterTicket);
+        Task<IEnumerable<TicketDto>> FilterTicket(FilterTicket filterTicket);
 
         Task<TicketStatistics> TicketStatistic();
 

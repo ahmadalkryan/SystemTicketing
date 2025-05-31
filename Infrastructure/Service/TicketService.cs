@@ -38,10 +38,10 @@ namespace Infrastructure.Service
         {
            var t = (await _repo.FindAsync(x => x.Id == dto.Id)).FirstOrDefault();
 
-         var T =  _mapper.Map<Ticket>(t);
+        
 
             await  _repo.RemoveAsync(t);
-            return _mapper.Map<TicketDto>(T);
+            return _mapper.Map<TicketDto>(t);
 
         }
 
@@ -64,7 +64,7 @@ namespace Infrastructure.Service
             return _mapper.Map<TicketDto>(t);
         }
 
-      public async Task<TicketDto>  FilterTicket(FilterTicket filterTicket)
+      public async Task<IEnumerable<TicketDto>>  FilterTicket(FilterTicket filterTicket)
         {
             var query = await _repo.GetAllAsync();
 
@@ -81,7 +81,7 @@ namespace Infrastructure.Service
             {
                 query=query.Where(x=>x._status.StatusName==filterTicket._status);
             }
-            return _mapper.Map<TicketDto>(query.FirstOrDefault());
+            return _mapper.Map<IEnumerable<TicketDto>>(query);
         }
 
         public async Task<TicketStatistics> TicketStatistic()

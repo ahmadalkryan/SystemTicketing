@@ -22,7 +22,7 @@ namespace Infrastructure.Context
 
         public virtual DbSet<TicketTrace> TicketTraces { get; set; }
 
-        public virtual DbSet<Notifiction> Notifictions { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
 
         public virtual DbSet<DeviceCategory> DeviceCategories { get; set; }
 
@@ -83,7 +83,7 @@ namespace Infrastructure.Context
                 .HasColumnName("Name").IsRequired().HasColumnType("nvarchar(10)");
 
             });
-            modelBuilder.Entity<Notifiction>(t =>
+            modelBuilder.Entity<Notification>(t =>
             {
              t.ToTable("Notifiction").HasKey(t=>t.Id);
                 t.Property(t=>t.Id).ValueGeneratedOnAdd ().HasColumnName("Id");
@@ -96,9 +96,9 @@ namespace Infrastructure.Context
                 t.Property(t => t.SentAt).HasColumnName("sentAt")
                 .HasColumnType("datetime2(7)").IsRequired();
 
-                t.HasOne(t => t._ticket).WithMany(t => t.Notifictions).HasForeignKey(t => t.TicketId).OnDelete(DeleteBehavior.NoAction);
+                t.HasOne(t => t._ticket).WithMany(t => t.Notifications).HasForeignKey(t => t.TicketId).OnDelete(DeleteBehavior.NoAction);
                 t.Property(t => t.TicketId).HasColumnName("TicketID");
-                t.HasOne(t=>t._user).WithMany(t=>t.Notifictions).HasForeignKey(t=>t.UserID).OnDelete(DeleteBehavior.NoAction);
+                t.HasOne(t=>t._user).WithMany(t=>t.Notifications).HasForeignKey(t=>t.UserID).OnDelete(DeleteBehavior.NoAction);
                 t.Property(t => t.UserID).HasColumnName("UserID").HasColumnType("nvarchar(100)");
 
 

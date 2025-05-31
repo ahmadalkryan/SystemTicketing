@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.common;
+using Application.Dtos.Ticket;
 using Application.Dtos.TicketStatus;
 using Application.IRepository;
 using Application.IService;
@@ -59,5 +60,7 @@ namespace Infrastructure.Service
             await _repo.UpdateAsync(t);
             return _mapper.Map<TicketStatusDto>(t);
         }
+
+       
     }
 }

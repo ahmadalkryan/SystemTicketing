@@ -11,7 +11,7 @@ namespace Domain.Entities
         public User()
         {
              UserRoles = new HashSet<UserRole>();
-            Notifictions = new HashSet<Notifiction>();
+            Notifications = new HashSet<Notification>();
             TicketTraces = new HashSet<TicketTrace>();
         }
         public string UserId { get; set; }
@@ -23,7 +23,7 @@ namespace Domain.Entities
 
         public string Password { get; set; }
 
-        public ICollection<Notifiction> Notifictions { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
         
 
         public ICollection<TicketTrace> TicketTraces { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.common;
 using Application.Dtos.Ticket;
+using Application.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,13 @@ namespace Application.IService
         Task<TicketDto> UpdateTicket(updateTicketDto updateTicketDto);
 
         Task<TicketDto> DeleteTicket(BaseDto<int> dto);
+
+        Task<IEnumerable<TicketDto>> FilterTicket(FilterTicket filterTicket);
+
+        Task<TicketStatistics> TicketStatistic();
+
+        Task<IEnumerable<TicketDto>> FilterTicketByDate(FilterDate filterDate);
+
 
     }
 }

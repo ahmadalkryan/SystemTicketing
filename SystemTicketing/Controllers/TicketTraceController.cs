@@ -44,7 +44,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<TicketTraceDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> GetTicketTraceById(BaseDto<int> dto)
+        public async Task<IActionResult> GetTicketTraceById([FromQuery]BaseDto<int> dto)
         {
             var result = await _ticketTraceService.GetTicketByID(dto);
 
@@ -55,7 +55,7 @@ namespace SystemTicketing.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<TicketTraceDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> InsertTicketTrace(CreateTicketTraceDto createTicketTraceDto)
+        public async Task<IActionResult> InsertTicketTrace([FromBody]CreateTicketTraceDto createTicketTraceDto)
         {
             var result = await _ticketTraceService.CreateTicket(createTicketTraceDto);
 
@@ -78,7 +78,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<TicketTraceDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> UpdateTicketTrace(UpdateTicketTraceDto updateTicketTraceDto)
+        public async Task<IActionResult> UpdateTicketTrace([FromBody] UpdateTicketTraceDto updateTicketTraceDto)
         {
             var result = await _ticketTraceService.UpdateTicket(updateTicketTraceDto);
 
@@ -93,7 +93,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
        
 
-        public async Task<IActionResult> GetAllTicketTraceForTicket(int id)
+        public async Task<IActionResult> GetAllTicketTraceForTicket([FromQuery] int id)
         {
             var result = await _ticketTraceService.GetTicketTracesForTicket(id);
 
@@ -105,7 +105,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
 
-        public async Task<IActionResult> GetAllTicketTraceForUser(string UserId)
+        public async Task<IActionResult> GetAllTicketTraceForUser([FromQuery] string UserId)
         {
             var result = await _ticketTraceService.GetTicketTracesForUser(UserId);
 

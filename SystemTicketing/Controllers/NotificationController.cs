@@ -44,7 +44,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<NotificationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> GetNotifucatinById(BaseDto<int> dto)
+        public async Task<IActionResult> GetNotifucatinById([FromQuery]BaseDto<int> dto)
         {
             var result = await _notificationService.GetNotificationByID(dto);
             return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
@@ -54,7 +54,7 @@ namespace SystemTicketing.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<NotificationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateNotification( CreateNotificationDto createNotificationDto)
+        public async Task<IActionResult> CreateNotification([FromBody] CreateNotificationDto createNotificationDto)
         {
             var result = await _notificationService.CreateNotification(createNotificationDto);
 
@@ -77,7 +77,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<NotificationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> UpdateNotification( UpdateNotificationDto updateNotificationDto)
+        public async Task<IActionResult> UpdateNotification([FromBody] UpdateNotificationDto updateNotificationDto)
         {
             var result = await _notificationService.UpdateNotification(updateNotificationDto);
 
@@ -89,7 +89,7 @@ namespace SystemTicketing.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
 
-        public async Task<IActionResult> IsReadNotification( int id)
+        public async Task<IActionResult> IsReadNotification([FromQuery] int id)
         {
             var result = await _notificationService.IsReadNotification(id);
 

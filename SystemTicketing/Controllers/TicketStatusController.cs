@@ -43,7 +43,7 @@ namespace SystemTicketing.Controllers
 
 
 
-        public async Task<IActionResult> GetTicketStatusById(BaseDto<int> dto)
+        public async Task<IActionResult> GetTicketStatusById([FromQuery]BaseDto<int> dto)
         {
             var result = await _ticketStausService.GetTicketByID(dto);
 
@@ -54,7 +54,7 @@ namespace SystemTicketing.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<TicketStatusDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> InsertTicket(CreateTicketStatusDto createTicketStatusDto)
+        public async Task<IActionResult> InsertTicket( [FromBody]CreateTicketStatusDto createTicketStatusDto)
         {
             var result = await _ticketStausService.CreateTicketStatus(createTicketStatusDto);
 
@@ -79,7 +79,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<TicketStatusDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> UpdateTicketStatus(UpdateTicketStatusDto updateTicketStatusDto )
+        public async Task<IActionResult> UpdateTicketStatus([FromBody]UpdateTicketStatusDto updateTicketStatusDto )
         {
             var result = await _ticketStausService .UpdateTicketStatus(updateTicketStatusDto);  
 

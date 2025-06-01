@@ -42,7 +42,7 @@ namespace SystemTicketing.Controllers
 
 
 
-         public async Task<IActionResult> GetTicketById(BaseDto<int> dto)
+         public async Task<IActionResult> GetTicketById([FromQuery] BaseDto<int> dto)
         {
             var result = await _ticketService.GetTicketByID(dto);
 
@@ -53,7 +53,7 @@ namespace SystemTicketing.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<TicketDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult > InsertTicket(CreateTicketDto dto)
+        public async Task<IActionResult > InsertTicket([FromBody] CreateTicketDto dto)
         {
             var result = await _ticketService.CreateTicket(dto);
 
@@ -76,7 +76,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<TicketDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> UpdateTicket(updateTicketDto updateTicketDto)
+        public async Task<IActionResult> UpdateTicket([FromBody]updateTicketDto updateTicketDto)
         {
             var result = await _ticketService.UpdateTicket(updateTicketDto);
 
@@ -87,7 +87,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<List<TicketDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> FilterTicket(FilterTicket filterTicket)
+        public async Task<IActionResult> FilterTicket([FromQuery] FilterTicket filterTicket)
         {
             var result =await _ticketService.FilterTicket(filterTicket);
 
@@ -112,7 +112,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<List<TicketDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
        
-        public async Task<IActionResult> FilterTicketByDate(FilterDate filterDate)
+        public async Task<IActionResult> FilterTicketByDate([FromQuery] FilterDate filterDate)
         {
             var result = await _ticketService.FilterTicketByDate(filterDate);
 

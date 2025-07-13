@@ -36,17 +36,31 @@ namespace SystemTicketing.Controllers
             return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK,result), string.Empty));
         }
 
+
+
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<TicketDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-
-
 
          public async Task<IActionResult> GetTicketById([FromQuery] BaseDto<int> dto)
         {
             var result = await _ticketService.GetTicketByID(dto);
 
             return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true ,"", StatusCodes.Status200OK ,result), string.Empty));
+
+        }
+
+
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<TicketDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> GetTicketByNumber([FromQuery] string number)
+        {
+            var result = await _ticketService.GetTicketByNumber(number);
+
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
 
         }
 

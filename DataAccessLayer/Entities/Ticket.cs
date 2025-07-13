@@ -30,7 +30,7 @@ namespace Domain.Entities
 
         public DeviceCategory _deviceType { get; set; }
 
-        public ICollection<TicketTrace> ticketTraces { get; set; }
+        public ICollection<TicketTrace>? ticketTraces { get; set; }
 
 
 

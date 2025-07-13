@@ -61,9 +61,6 @@ namespace Infrastructure.Service
             return _mapper.Map<TicketStatusDto>(t);
         }
 
-        Task<TicketStatusDto> ITicketStausService.CreateTicketStatus(CreateTicketStatusDto createTicketStatusDto)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

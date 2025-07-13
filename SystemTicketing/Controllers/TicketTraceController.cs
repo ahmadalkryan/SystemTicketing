@@ -52,6 +52,18 @@ namespace SystemTicketing.Controllers
 
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<TicketTraceDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> GetTicketTraceByNumber([FromQuery] string TicketNumber)
+        {
+            var result = await _ticketTraceService.GetTicketTraceForTicketByNumber(TicketNumber);
+
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<TicketTraceDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]

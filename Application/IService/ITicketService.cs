@@ -14,6 +14,8 @@ namespace Application.IService
         Task<IEnumerable<TicketDto>>  GetAllTickets();
         Task<TicketDto>  GetTicketByID(BaseDto<int> dto);
 
+        Task<TicketDto> GetTicketByNumber(string TicketNumber);
+
         Task<TicketDto> CreateTicket(CreateTicketDto createTicketDto);
 
         Task<TicketDto> UpdateTicket(updateTicketDto updateTicketDto);

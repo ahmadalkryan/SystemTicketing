@@ -20,8 +20,8 @@ namespace Domain.Entities
 
         public string UserID { get; set; }
 
-        public User _user {  get; set; }
+        public User? _user {  get; set; }
 
-        public Ticket _ticket { get; set; }
+        public Ticket? _ticket { get; set; }
     }
 }

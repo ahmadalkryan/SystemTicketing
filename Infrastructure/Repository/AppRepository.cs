@@ -74,7 +74,8 @@ namespace Infrastructure.Repository
             return false;
         }
 
-        public async  Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] navigationProperties)
+        public async  Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, 
+            params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> query = _dbSet;
             if(navigationProperties is not null)

@@ -23,6 +23,8 @@ namespace Application.IService
 
         Task<IEnumerable<TicketTraceDto>> GetTicketTracesForTicket(int ticketId);
 
+        Task<IEnumerable<TicketTraceDto>> GetTicketTraceForTicketByNumber(string ticketnumber);
+
         Task<IEnumerable<TicketTraceDto>> GetTicketTracesForUser(string userId);
 
 

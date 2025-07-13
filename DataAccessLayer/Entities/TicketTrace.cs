@@ -22,11 +22,11 @@ namespace Domain.Entities
 
         public int TicketId { get; set; }
 
-        public Ticket _ticket {  get; set; }
+        public Ticket? _ticket {  get; set; }
 
         public string UserId { get; set; }
 
-        public User _user { get; set; }
+        public User? _user { get; set; }
 
         public TicketStatus? _ticketStatus { get; set; }
 

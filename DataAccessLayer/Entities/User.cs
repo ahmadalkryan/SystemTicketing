@@ -23,12 +23,12 @@ namespace Domain.Entities
 
         public string Password { get; set; }
 
-        public ICollection<Notification> Notifications { get; set; }
+        public ICollection<Notification>? Notifications { get; set; }
         
 
-        public ICollection<TicketTrace> TicketTraces { get; set; }
+        public ICollection<TicketTrace>? TicketTraces { get; set; }
 
 
-        public ICollection<UserRole>UserRoles { get; set; }
+        public ICollection<UserRole> ? UserRoles { get; set; }
     }
 }

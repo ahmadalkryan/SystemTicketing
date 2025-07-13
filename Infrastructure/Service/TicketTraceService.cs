@@ -17,6 +17,8 @@ namespace Infrastructure.Service
 
         private readonly IAppRepository<TicketTrace> _repo;
         private readonly IMapper _mapper;
+        private readonly ITicketService _service;
+
 
         public TicketTraceService(IAppRepository <TicketTrace> T ,IMapper mapper)
         {
@@ -62,16 +64,26 @@ namespace Infrastructure.Service
 
         public async Task<IEnumerable<TicketTraceDto>> GetTicketTracesForTicket(int ticketId)
         {
-           var t = await _repo.FindAsync(x=>x.TicketId == ticketId,x=>x._ticket );
+           var t = await _repo.FindAsync(x=>x.TicketId == ticketId,x=>x._ticket! );
             return _mapper.Map<IEnumerable<TicketTraceDto>>(t);
         }
 
         public async Task<IEnumerable<TicketTraceDto>> GetTicketTracesForUser(string userId)
         {
-            var  t= await _repo.FindAsync(x=>x.UserId ==userId ,x=>x._user);
+            var  t= await _repo.FindAsync(x=>x.UserId ==userId ,x=>x._user!);
 
 
             return _mapper.Map<IEnumerable<TicketTraceDto>>(t);
+
+        }
+
+        public async Task<IEnumerable<TicketTraceDto>> GetTicketTraceForTicketByNumber(string ticketnumber)
+        {
+            var ticket = await _service.GetTicketByNumber(ticketnumber);
+
+            var tickettrace = await _repo.FindAsync(x=>x.TicketId==ticket.Id,x=>x._ticket! );
+
+            return _mapper.Map<IEnumerable<TicketTraceDto>>(tickettrace);
 
         }
     }

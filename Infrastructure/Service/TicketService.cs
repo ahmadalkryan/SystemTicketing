@@ -7,6 +7,7 @@ using AutoMapper;
 using DataAccessLyer.Enum;
 using Domain.Entities;
 using Infrastructure.Repository;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,27 +89,27 @@ namespace Infrastructure.Service
         {
             var t = await _repo.GetAllAsync();
 
-            TicketStatusEnum Tc = TicketStatusEnum.Complete;
-            TicketStatusEnum Tp = TicketStatusEnum.Pending;
-            TicketStatusEnum Tr = TicketStatusEnum.Refund;
+            TicketStatusEnum Tcomplete = TicketStatusEnum.Complete;
+            TicketStatusEnum Tpendng= TicketStatusEnum.Pending;
+            TicketStatusEnum Trefund = TicketStatusEnum.Refund;
 
 
-            TicketStatistics ts = new TicketStatistics()
+            TicketStatistics ticketStatistics = new TicketStatistics()
             {
 
                 TotalTickets = t.Count(),
-                CompleteTickets = t.Where(x=>x._status.StatusName.ToString()==Tc.ToString()).Count(),
-                PendingTickets = t.Where(t => t._status.StatusName == TicketStatusEnum.Pending).Count(),
-                refundTickets = t.Where(t =>t._status.StatusName.ToString().Equals(Tc.ToString())).Count()
+                CompleteTickets = t.Where(x=>x._status?.StatusName.ToString()==Tcomplete.ToString()).Count(),
+                PendingTickets = t.Where(t => t._status?.StatusName.ToString() == Tpendng.ToString()).Count(),
+                refundTickets = t.Where(t =>t._status.StatusName.ToString().Equals(Trefund.ToString())).Count()
             };
 
             
 
-             return ts;
+             return ticketStatistics;
 
         }
 
-        public  async Task<IEnumerable<TicketDto>> FilterTicketByDate(FilterDate filterDate)
+        public  async Task<IEnumerable<TicketDto>> FilterTicketByDate([FromBody]FilterDate filterDate)
         {
             var query = await _repo.GetAllAsync();
 
@@ -120,5 +121,14 @@ namespace Infrastructure.Service
             return _mapper.Map<IEnumerable<TicketDto>>(query);
         }
 
+        public async Task<TicketDto> GetTicketByNumber(string TicketNumber)
+        {
+           var tickets = await _repo.GetAllAsync();
+
+            var t = tickets.Where(x=> x.TicketNumber==TicketNumber); ;
+
+            return _mapper.Map<TicketDto>(t);
+
+        }
     }
 }

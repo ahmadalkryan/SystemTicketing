@@ -9,8 +9,6 @@ namespace Application.Dtos.Ticket
 {
     public class updateTicketDto:BaseDto<int>
     {
-
-       
       
         public string Description { get; set; }
 

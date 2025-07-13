@@ -13,21 +13,21 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Service
 {
-    public class TicketStuatusService : ITicketStausService
+    public class TicketStatusService : ITicketStatusService
     {
           private readonly IAppRepository<TicketStatus> _repo ;
 
           private readonly IMapper _mapper ;
 
 
-        public TicketStuatusService(IAppRepository<TicketStatus> appRepository ,IMapper mapper)
+        public TicketStatusService(IAppRepository<TicketStatus> appRepository ,IMapper mapper)
         {
              _repo = appRepository ;
             _mapper = mapper ;
         }
 
 
-        public async Task<TicketStatusDto> CreateTicketstatus(CreateTicketStatusDto createTicketStatusDto)
+        public async Task<TicketStatusDto> CreateTicketStatus(CreateTicketStatusDto createTicketStatusDto)
         {
              var t = _mapper.Map<TicketStatus>(createTicketStatusDto);
             await _repo.Insertasync(t);

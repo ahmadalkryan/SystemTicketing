@@ -16,9 +16,9 @@ namespace SystemTicketing.Controllers
     {
         private readonly IJsonFieldsSerializer _jsonFieldsSerializer;
 
-        private readonly ITicketStausService _ticketStausService;
+        private readonly ITicketStatusService _ticketStausService;
 
-        public TicketStatusController(ITicketStausService ticketStausService, IJsonFieldsSerializer jsonFieldsSerializer)
+        public TicketStatusController(ITicketStatusService ticketStausService, IJsonFieldsSerializer jsonFieldsSerializer)
         {
              _jsonFieldsSerializer = jsonFieldsSerializer;
             _ticketStausService = ticketStausService;

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.IService
 {
-    public interface ITicketStausService
+    public interface ITicketStatusService
     {
         Task<IEnumerable<TicketStatusDto>> GetAllTicketStatus();
         Task<TicketStatusDto> GetTicketByID(BaseDto<int> dto);

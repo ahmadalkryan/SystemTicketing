@@ -29,8 +29,8 @@ namespace SystemTicketing
                 }
 
                 dataSeeder.SeedData();
-
-                app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseHttpsRedirection();
                 app.UseStaticFiles();
                 app.UseRouting();
 
@@ -45,9 +45,10 @@ namespace SystemTicketing
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My_API V1");
                 });
 
-                app.UseMiddleware<ExceptionHandlingMiddleware>();
+            // app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<TicketNotificationMiddleware>();
 
-                app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
                 });

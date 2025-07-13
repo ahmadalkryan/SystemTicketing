@@ -15,6 +15,8 @@ namespace Application.IService
         Task<IEnumerable<NotificationDto>> GetAllNotifications();
         Task<NotificationDto> GetNotificationByID(BaseDto<int> dto);
 
+        Task<NotificationDto> SendNotification(string userID, string message, int ticketId);
+
         Task<NotificationDto> CreateNotification(CreateNotificationDto createNotificationDto);
 
         Task<NotificationDto> UpdateNotification(UpdateNotificationDto updateNotificationDto );

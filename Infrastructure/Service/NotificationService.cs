@@ -69,5 +69,19 @@ namespace Infrastructure.Service
 
             return N.IsRead ? true : false;
         }
+
+       public async  Task<NotificationDto> SendNotification(string userID, string message, int ticketId)
+        {
+            CreateNotificationDto notificationDto = new CreateNotificationDto { UserID = userID, Message = message, TicketId = ticketId 
+            ,IsRead=false,SentAt=DateTime.UtcNow
+
+            
+            };
+            var n = _mapper.Map<Notification>(notificationDto);
+            await CreateNotification(notificationDto);
+            return _mapper.Map<NotificationDto>(n);
+
+
+        }
     }
 }

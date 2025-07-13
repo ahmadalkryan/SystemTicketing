@@ -79,9 +79,26 @@ namespace Infrastructure.Service
             };
             var n = _mapper.Map<Notification>(notificationDto);
             await CreateNotification(notificationDto);
+
+
+            UpdateNotificationDto updatnotification = new UpdateNotificationDto
+            {
+                Id=n.Id,
+
+                IsRead = true,
+            };
+
+            await UpdateNotification(updatnotification);
+
+
+
+
+
             return _mapper.Map<NotificationDto>(n);
 
 
         }
+
+        
     }
 }

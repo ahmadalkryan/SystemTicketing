@@ -101,7 +101,7 @@ public class TicketNotificationMiddleware
             // 8. إرسال إشعار لكل مسؤول
             foreach (var manager in maintenanceManagers)
             {
-                await _notificationService.SendNotificationAsync(
+                await _notificationService.SendNotification(
                     manager.UserId,
                     $"تم إنشاء تذكرة جديدة: #{ticketDto.TicketNumber}",
                     ticketDto.Id
@@ -127,7 +127,7 @@ public class TicketNotificationMiddleware
             if (originalTicket != null && originalTicket.TicketStatusId != ticketTraceDto.StatusID)
             {
                 // 11. إرسال إشعار للموظف
-                await _notificationService.SendNotificationAsync(
+                await _notificationService.SendNotification(
                     ticketTraceDto.UserId, // يجب إضافة هذا الحقل للنموذج
                     $"تم تحديث حالة تذكرتك #{originalTicket.TicketNumber}",
                     ticketTraceDto.Id

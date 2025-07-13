@@ -9,15 +9,15 @@ namespace Application.Dtos.Notification
 {
     public class UpdateNotificationDto:BaseDto<int>
     {
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
-        public bool IsRead { get; set; }
+        public bool? IsRead { get; set; }
 
-        public DateTime SentAt { get; set; }
+        public DateTime? SentAt { get; set; }
 
-        public int TicketId { get; set; }
+        public int? TicketId { get; set; }
 
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
 
     }
 }

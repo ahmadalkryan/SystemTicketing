@@ -4,6 +4,7 @@ using Application.IRepository;
 using Application.IService;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,13 @@ namespace Infrastructure.Service
     {
         private readonly IAppRepository<Notification> _appRepository;
         private readonly IMapper _mapper;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public NotificationService(IAppRepository<Notification> _rep ,IMapper _map) 
+        public NotificationService(IAppRepository<Notification> _rep ,IMapper _map, IHubContext<NotificationHub> hubContext) 
         {
              _appRepository = _rep ;
             _mapper = _map ;
+            _hubContext = hubContext ;
         }
 
 
@@ -80,6 +83,12 @@ namespace Infrastructure.Service
             var n = _mapper.Map<Notification>(notificationDto);
             await CreateNotification(notificationDto);
 
+            var NotDto = _mapper.Map<NotificationDto>(n);
+
+            //send Notification by SignalR
+            await _hubContext.Clients
+        .User(userID) // send to spceific user 
+        .SendAsync("ReceiveNotification", NotDto);
 
             UpdateNotificationDto updatnotification = new UpdateNotificationDto
             {
@@ -94,7 +103,7 @@ namespace Infrastructure.Service
 
 
 
-            return _mapper.Map<NotificationDto>(n);
+            return NotDto ;
 
 
         }

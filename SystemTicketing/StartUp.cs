@@ -33,8 +33,8 @@ namespace SystemTicketing
             app.UseHttpsRedirection();
                 app.UseStaticFiles();
                 app.UseRouting();
-
-                app.UseCors("DevCors");
+                 // app.MapHub<NotificationHub>("/notificationHub");
+            app.UseCors("DevCors");
 
                 app.UseAuthentication();
                 app.UseAuthorization();

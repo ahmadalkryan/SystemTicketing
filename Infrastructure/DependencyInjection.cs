@@ -43,7 +43,7 @@ namespace Infrastructure
             services.AddScoped<ITicketTraceService, TicketTraceService>();
             services.AddScoped<INotificationService, NotificationService>();
 
-
+            services.AddSignalR();
 
 
             return services;

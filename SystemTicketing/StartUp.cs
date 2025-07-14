@@ -15,12 +15,16 @@ namespace SystemTicketing
             {
             services
                 .AddApplication()
-                .AddInfrastructure(Configuration);
-                    //.AddPresentation(Configuration);
+                .AddInfrastructure(Configuration)
+                    .AddPresentation(Configuration);
             }
 
+        private void AddPresentation(IConfiguration configuration)
+        {
+            throw new NotImplementedException();
+        }
 
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataSeeder dataSeeder)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataSeeder dataSeeder)
             {
                 if (env.IsDevelopment())
                 {

@@ -51,6 +51,8 @@ namespace SystemTicketing.EXpectionMiddleWare
             }
         }
 
+
+
         //private async Task ExceptionHandlingAsync(HttpContext context ,Exception ex)
         //{
         //    bool isApiRequest = context.Request.Path.StartsWithSegments("/api");

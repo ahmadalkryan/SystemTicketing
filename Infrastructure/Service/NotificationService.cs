@@ -21,12 +21,12 @@ namespace Infrastructure.Service
         private readonly IAppRepository<Notification> _appRepository;
         private readonly IMapper _mapper;
         private readonly IHubContext<NotificationHub> _hubContext;
-        private readonly EmailService _emailService;
+        private readonly IEmailService _emailService;
         private readonly ILogger _logger;
         private readonly AppDbContext _app;
 
         public NotificationService(IAppRepository<Notification> _rep ,IMapper _map, IHubContext<NotificationHub> hubContext ,
-            EmailService emailService ,ILogger logger ,AppDbContext appContext) 
+            IEmailService emailService ,ILogger logger ,AppDbContext appContext) 
         {
              _appRepository = _rep ;
             _mapper = _map ;
@@ -96,24 +96,25 @@ namespace Infrastructure.Service
             var NotDto = _mapper.Map<NotificationDto>(n);
 
             //send Notification by SignalR
-            await _hubContext.Clients
-        .User(userID) // send to spceific user 
-        .SendAsync("ReceiveNotification", NotDto);
+                 await _hubContext.Clients
+                              .User(userID)          // send to specific user 
+                                        .SendAsync("ReceiveNotification", NotDto);
 
-            // إsend Email 
+            // send Email 
             try
             {
                 // get Email For USER  ***************************
                 //*********************
-                var user = _app.Users.FirstOrDefault(x=>x.UserId == userID);
+                var user = _app.Users.FirstOrDefault(x => x.UserId == userID);
 
-              //  string userEmail = await _userService.GetUserEmailById(userID);
+                //  string userEmail = await _userService.GetUserEmailById(userID);
 
-                string userEmail = user?.Email;
+                string userEmail = user.Email;
                 if (!string.IsNullOrEmpty(userEmail))
                 {
                     string emailSubject = " NEW Notification  " + message;
-                     _emailService.SendEmailAsync(userEmail, emailSubject, message);
+
+                   await _emailService.SendAsync(userEmail, emailSubject,message);
                 }
             }
             catch (Exception ex)

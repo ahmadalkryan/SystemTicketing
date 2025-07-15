@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using SystemTicketing.EmailService;
 using SystemTicketing.EmailService.EmailConfig;
 
-public class EmailService : IEmailService
+namespace SystemTicketing.EmailService { 
+public class EmailSender : IEmailService
 {
     private readonly EmailConfiguration _emailConfig;
 
     // استخدم IOptions<EmailConfiguration> بدلاً من EmailConfiguration مباشرة
-    public EmailService(IOptions<EmailConfiguration> emailConfig)
+    public EmailSender(IOptions<EmailConfiguration> emailConfig)
     {
         _emailConfig = emailConfig.Value; // احصل على القيمة من IOptions
     }
@@ -25,7 +26,7 @@ public class EmailService : IEmailService
 
         using var client = new SmtpClient();
 
-        client.Timeout = 50000; // وقت أقصر للشبكة الداخلية
+        client.Timeout = 50000; 
         client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
         await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.SmtpPort, true);
@@ -34,4 +35,4 @@ public class EmailService : IEmailService
             await client.DisconnectAsync(true);
         
     }
-}
+}}

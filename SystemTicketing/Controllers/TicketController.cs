@@ -14,7 +14,7 @@ namespace SystemTicketing.Controllers
     public class TicketController : ControllerBase
 
     {  
-        private readonly ITicketService _ticketService;
+         private readonly ITicketService _ticketService;
          private readonly IJsonFieldsSerializer _jsonFieldsSerializer;
 
         public TicketController( ITicketService ticketService ,IJsonFieldsSerializer jsonFieldsSerializer )
@@ -67,7 +67,7 @@ namespace SystemTicketing.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<TicketDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        [ServiceFilter(typeof(TicketNotificationFilter))]
+       // [ServiceFilter(typeof(TicketNotificationFilter))]
         public async Task<IActionResult > InsertTicket([FromBody] CreateTicketDto dto)
         {
             var result = await _ticketService.CreateTicket(dto);

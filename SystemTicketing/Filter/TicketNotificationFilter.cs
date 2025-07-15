@@ -70,7 +70,7 @@ public class TicketNotificationFilter : IAsyncActionFilter
         var maintenanceManagers = await _dbContext.Users
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur._role)
-            .Where(u => u.UserRoles.Any(ur => ur._role.Name == "MaintenanceManager"))
+            .Where(u => u.UserRoles.Any(ur => ur._role.Name == "MaintenanceEmployee"))
             .ToListAsync();
 
         //var manger = await _dbContext.Users.Include(u => u.UserRoles.

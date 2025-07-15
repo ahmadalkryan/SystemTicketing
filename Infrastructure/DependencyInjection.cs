@@ -42,6 +42,7 @@ namespace Infrastructure
             services.AddScoped<ITicketStatusService, TicketStatusService>();
             services.AddScoped<ITicketTraceService, TicketTraceService>();
             services.AddScoped<INotificationService, NotificationService>();
+           // services.AddSignalR();
 
             services.AddSignalR();
 

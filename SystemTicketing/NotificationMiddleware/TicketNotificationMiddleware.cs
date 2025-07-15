@@ -27,7 +27,7 @@ public class TicketNotificationMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        // 1. حفظ الجسم الأصلي للاستجابة
+        
         var originalBodyStream = context.Response.Body;
 
         using var responseBody = new MemoryStream();
@@ -35,10 +35,10 @@ public class TicketNotificationMiddleware
 
         await _next(context);
 
-        // 2. معالجة طلبات التذاكر فقط
+       
         if (context.Request.Path.StartsWithSegments("/api/Ticket")||context.Request.Path.StartsWithSegments("/api/TicketTrace"))
         {
-            // 3. إعادة تعيين تيار الاستجابة للقراءة
+            //  إعادة تعيين تيار الاستجابة للقراءة
             responseBody.Seek(0, SeekOrigin.Begin);
             var responseContent = await new StreamReader(responseBody).ReadToEndAsync();
 
@@ -95,7 +95,7 @@ public class TicketNotificationMiddleware
             var maintenanceManagers = await _dbContext.Users
                 .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur._role)
-                .Where(u => u.UserRoles.Any(ur => ur._role.Name == "MaintenanceManager"))
+                .Where(u => u.UserRoles.Any(ur => ur._role.Name == "MaintenanceEmployee"))
                 .ToListAsync();
 
             // 8. إرسال إشعار لكل مسؤول

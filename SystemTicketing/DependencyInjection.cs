@@ -9,9 +9,12 @@ namespace SystemTicketing
         public static IServiceCollection AddPresentation( this IServiceCollection services ,IConfiguration configuration)
         {
             services.AddScoped<TicketNotificationFilter>();
+
             services.Configure<EmailConfiguration>(
     configuration.GetSection("EmailConfiguration"));
-            services.AddTransient<IEmailService,EmailService>();
+
+            services.AddTransient<IEmailService,EmailSender>();
+      //      services.AddSignalR();
 
             return services;
         }

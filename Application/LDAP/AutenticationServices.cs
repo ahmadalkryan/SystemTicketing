@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Application.LDAP
 {
-    public class AutenticationService
+    public class AutenticationServices
     {
         private readonly IUserService _userService;
-        public AutenticationService(IUserService userService)
+        public AutenticationServices(IUserService userService)
         {
             _userService = userService;
 
         }
-        public readonly static List<LdapUser> _ldapUsers = new()
+        public readonly  List<LdapUser> _ldapUsers = new()
         {
             new LdapUser
         {
@@ -38,7 +38,7 @@ namespace Application.LDAP
         }
         };
 
-        public bool Authenticate(LoginDto loginnDto)
+        public  bool Authenticate(LoginDto loginnDto)
         {
             var ldap = _ldapUsers.FirstOrDefault(x => x.Username == loginnDto.username && x.Password == loginnDto.password);
 
@@ -54,6 +54,11 @@ namespace Application.LDAP
             return true;
 
 
+
+        }
+        public LdapUser GEtUser(LoginDto loginnDto)
+        {
+            return _ldapUsers.FirstOrDefault(x => x.Username == loginnDto.username && x.Password == loginnDto.password);
 
         }
     }

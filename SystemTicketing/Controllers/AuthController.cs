@@ -13,9 +13,9 @@ namespace SystemTicketing.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly AuthenticationService _authenticationService;
+        private readonly AutenticationServices _authenticationService;
 
-        public AuthController(IUserService userService , AuthenticationService authenticationService)
+        public AuthController(IUserService userService , AutenticationServices authenticationService)
         {
             _authenticationService = authenticationService;
             _userService = userService;
@@ -26,16 +26,24 @@ namespace SystemTicketing.Controllers
         public  async Task<IActionResult> Login([FromBody]LoginDto loginDto)
         {
 
-            LdapUser user = AutenticationService._ldapUsers
-                 .FirstOrDefault(x => x.Username == loginDto.username && x.Password == loginDto.password);
+            //LdapUser user = AutenticationService._ldapUsers
+            //     .FirstOrDefault(x => x.Username == loginDto.username && x.Password == loginDto.password);
 
-            if (user == null )
+            var Isldap = _authenticationService.Authenticate(loginDto);
+
+
+
+            if (Isldap == false )
             
             {
 
                 return Unauthorized(" Unauthorized user ");
 
             }
+
+            // get user from Ldap 
+            var user = _authenticationService.GEtUser(loginDto);
+            // exists in Db 
             var existuser = _userService.GetUserByEmail(user.
                     Email);
 

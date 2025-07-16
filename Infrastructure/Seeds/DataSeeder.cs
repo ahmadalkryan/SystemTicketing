@@ -54,6 +54,12 @@ namespace Infrastructure.Seeds
             }
 
 
+            if (shouldSave)
+            {
+                shouldSave = false;
+                _context.SaveChanges();
+            }
+
             // 2. Seed TicketStatuses
             if (!_context.TicketStatuses.Any())
             {
@@ -66,15 +72,29 @@ namespace Infrastructure.Seeds
                 shouldSave = true;
             }
 
+            if (shouldSave)
+            {
+                shouldSave = false;
+                _context.SaveChanges();
+            }
+
             if (!_context.DeviceCategories.Any())
             {
                 _context.DeviceCategories.AddRange(
                     new DeviceCategory { CategoryName = "Laptop", Abbreviation = "LT" },
                     new DeviceCategory { CategoryName = "Desktop", Abbreviation = "DT" },
                     new DeviceCategory { CategoryName = "Printer", Abbreviation = "PR" },
-                    new DeviceCategory { CategoryName = "Server", Abbreviation = "SV" }
+                    new DeviceCategory { CategoryName = "Server", Abbreviation = "SV" },
+                    new DeviceCategory { CategoryName ="Projector" , Abbreviation ="PRJ"}
                 );
                 shouldSave = true;
+            }
+
+
+            if (shouldSave)
+            {
+                shouldSave = false;
+                _context.SaveChanges();
             }
 
             if (!_context.Users.Any())
@@ -109,7 +129,8 @@ namespace Infrastructure.Seeds
 
             if (!_context.Tickets.Any())
             {
-                var openStatus = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.New);
+                var newTicket = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.New);
+                var pendingTicket = _context.TicketStatuses.First(u => u.StatusName == TicketStatusEnum.Pending);
                 var adminUser = _context.Users.First(u => u.Email == "admin@example.com");
 
                 _context.Tickets.AddRange(
@@ -120,16 +141,16 @@ namespace Infrastructure.Seeds
                         AttachmentPath = "/attachments/monitor.jpg",
                         CreatedDate = DateTime.UtcNow.AddDays(-2),
                         UpdatedDate = DateTime.UtcNow.AddDays(-1),
-                        _status= openStatus
+                        _status= newTicket
                     },
                     new Ticket
                     {
                         TicketNumber = "TICKET-002",
                         Description = "Keyboard keys stuck",
-                        AttachmentPath = null,
+                        AttachmentPath = "",
                         CreatedDate = DateTime.UtcNow.AddHours(-3),
                         UpdatedDate = DateTime.UtcNow.AddHours(-1),
-                        _status = openStatus
+                        _status = pendingTicket
                     }
                 );
                 shouldSave = true;
@@ -177,7 +198,6 @@ namespace Infrastructure.Seeds
                 }
                 shouldSave = true;
             }
-
 
 
 

@@ -13,7 +13,7 @@ namespace SystemTicketing
             services.Configure<EmailConfiguration>(
     configuration.GetSection("EmailConfiguration"));
 
-            services.AddTransient<IEmailService,EmailSender>();
+            services.AddScoped<IEmailService, EmailSender>();
       //      services.AddSignalR();
 
             return services;

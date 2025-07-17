@@ -46,17 +46,16 @@ namespace Infrastructure.Service
             return _mapper.Map<UserDto>(user);
         }
 
-        async Task<UserDto> GetUserByEmail(string email)
+      public  async Task<UserDto> GetUserByEmail(string email)
         {
-            var user = await GetAllUsers();
-            var us = user.Where(user=>user.Email == email);
-
+           var user =  await _repo.GetAllAsync();
+           var us = user.FirstOrDefault(x=>x.Email==email);
             return _mapper.Map<UserDto>(us);
         }
 
-        Task<UserDto> IUserService.GetUserByEmail(string email)
-        {
-            return GetUserByEmail(email);
-        }
+        //Task<User> IUserService.GetUserByEmail(string email)
+        //{
+        //    return GetUserByEmail(email);
+        //}
     }
 }

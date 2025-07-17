@@ -1,7 +1,9 @@
 ﻿using Application.Dtos.LogIn;
 using Application.IService;
 using Application.LDAP;
+using AutoMapper;
 using Domain.Entities;
+using Infrastructure.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,15 @@ namespace SystemTicketing.Controllers
     {
         private readonly IUserService _userService;
         private readonly AutenticationServices _authenticationService;
+        private readonly IMapper _mapper;
+        private readonly TokenService _tokenSevice ;
 
-        public AuthController(IUserService userService , AutenticationServices authenticationService)
+        public AuthController(IUserService userService , AutenticationServices authenticationService,IMapper mapper ,TokenService tokenSevice)
         {
             _authenticationService = authenticationService;
+            _mapper = mapper;
             _userService = userService;
+            _tokenSevice = tokenSevice;
         }
 
 
@@ -33,27 +39,50 @@ namespace SystemTicketing.Controllers
 
 
 
-            if (Isldap == false )
+            if (!Isldap )
             
             {
 
                 return Unauthorized(" Unauthorized user ");
 
             }
-
-            // get user from Ldap 
-            var user = _authenticationService.GEtUser(loginDto);
+            
+                // get user from Ldap 
+                var ldapUser = _authenticationService.GEtUser(loginDto);
+            if(ldapUser == null){
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             // exists in Db 
-            var existuser = _userService.GetUserByEmail(user.
+            var existuser = _userService.GetUserByEmail(ldapUser.
                     Email);
 
-            if(existuser == null)
+            if (existuser == null)
             {
                
-               await _userService.InsertUser(user);
-
+              await _userService.InsertUser(ldapUser);
+                
+               
+               
             }
-            return Ok(loginDto);
+            var user = await _userService.GetUserByEmail(ldapUser.Email);
+            User newUser = new User
+            {
+                UserId = user.UserId,
+                Name = ldapUser.Name,
+                Email = ldapUser.Email,
+                Password = ldapUser.Password,
+                Department = ldapUser.Department,
+            };
+            var token = _tokenSevice.GenerateToken(newUser);
+
+            return Ok(new AuthResponseDto
+            {
+                Token = token,
+                UserId = newUser.UserId,
+                FullName =newUser.Name,
+                Email = newUser.Email,
+                Department = newUser.Department
+            });
 
 
         }

@@ -5,11 +5,13 @@ using Infrastructure.Context;
 using Infrastructure.Repository;
 using Infrastructure.Service;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,7 @@ namespace Infrastructure
           //.AddIdentityOptions()
           //.AddBackgroundServices();
 
-        private static IServiceCollection AddServices(this IServiceCollection services)
+        private static IServiceCollection AddServices(this IServiceCollection services )
         {
             services.AddScoped(typeof(IAppRepository<>), typeof(AppRepository<>));
            // services.AddScoped(typeof(IIdentityAppRepository<>), typeof(IdentityRepository<>));
@@ -42,7 +44,8 @@ namespace Infrastructure
             services.AddScoped<ITicketStatusService, TicketStatusService>();
             services.AddScoped<ITicketTraceService, TicketTraceService>();
             services.AddScoped<INotificationService, NotificationService>();
-           // services.AddSignalR();
+            
+            // services.AddSignalR();
 
             services.AddSignalR();
 

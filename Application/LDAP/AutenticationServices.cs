@@ -20,27 +20,36 @@ namespace Application.LDAP
         {
             new LdapUser
         {
-            Username = "emp1",
+            Name = "emp1",
             Password = "emp1@123",
-            FullName = "محمد أحمد",
+         //FullName = "محمد أحمد",
             Department = "قسم الموارد البشرية",
             Email = "m.ahmed@institute.edu",
-            Role = "Employee"
+           // Role = "Employee"
+        },
+            new LdapUser
+        {
+            Name = "emp3",
+            Password = "emp1@123",
+         //FullName = "محمد أحمد",
+            Department = "قسم   IT ",
+            Email = "m.ahmed@institute.edu",
+           // Role = "Employee"
         },
         new LdapUser
         {
-            Username = "maint1",
+            Name = "maint1",
             Password = "maint@456",
-            FullName = "علي محمود",
+          //  FullName = "علي محمود",
             Department = "قسم الصيانة",
             Email = "a.mahmoud@institute.edu",
-            Role = "MaintenanceManager"
+         //   Role = "MaintenanceManager"
         }
         };
 
         public  bool Authenticate(LoginDto loginnDto)
         {
-            var ldap = _ldapUsers.FirstOrDefault(x => x.Username == loginnDto.username && x.Password == loginnDto.password);
+            var ldap = _ldapUsers.FirstOrDefault(x => x.Name == loginnDto.username && x.Password == loginnDto.password);
 
             if (ldap == null)
             {
@@ -58,7 +67,17 @@ namespace Application.LDAP
         }
         public LdapUser GEtUser(LoginDto loginnDto)
         {
-            return _ldapUsers.FirstOrDefault(x => x.Username == loginnDto.username && x.Password == loginnDto.password);
+
+           
+           
+                   LdapUser ldapUser= _ldapUsers.FirstOrDefault(x => x.Name == loginnDto.username && 
+                   x.Password == loginnDto.password)!;
+           if(ldapUser == null)
+            {
+                throw new Exception();
+            }
+           else { return ldapUser; }
+            
 
         }
     }

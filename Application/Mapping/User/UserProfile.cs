@@ -16,6 +16,8 @@ namespace Application.Mapping
         {
             CreateMap<User, UserDto>();
             CreateMap<LdapUser, User>();
+            CreateMap<User ,LdapUser>();
+          
         }
     }
 }

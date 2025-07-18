@@ -30,7 +30,23 @@ namespace SystemTicketing
             ValidAudience = configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+
         };
+        //options.Events = new JwtBearerEvents
+        //{
+        //    OnTokenValidated = async context =>
+        //    {
+        //        var token = context.SecurityToken?.RawData;
+        //        var tokenBlacklistService = context.HttpContext.RequestServices
+        //            .GetRequiredService<ITokenBlacklistService>();
+
+        //        if (!string.IsNullOrEmpty(token) &&
+        //            tokenBlacklistService.IsTokenBlacklisted(token))
+        //        {
+        //            context.Fail("Token is blacklisted");
+        //        }
+        //    }
+        //};
     });
             //      services.AddSignalR();
 

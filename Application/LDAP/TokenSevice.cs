@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -18,10 +19,14 @@ namespace Application.LDAP
         private readonly string _issuer;
         private readonly string _audience;
         private readonly int _expiryMinutes;
+        private readonly IMemoryCache _cache;
 
-        public TokenService(IConfiguration configuration)
+       // private readonly HashSet<string> _blackllistToken= new HashSet<string>();
+
+        public TokenService(IConfiguration configuration , IMemoryCache memoryCache)
         {
             _configuration = configuration;
+             _cache = memoryCache;
 
             // استخراج إعدادات التوكن من ملف التكوين
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
@@ -31,10 +36,10 @@ namespace Application.LDAP
             _audience = _configuration["Jwt:Audience"] ?? throw new InvalidOperationException("JWT Audience is missing");
             _expiryMinutes = int.TryParse(_configuration["Jwt:ExpiryMinutes"], out int minutes) ? minutes : 60;
         }
-
+        
         public string GenerateToken(User user)
         {
-            // 1. إنشاء مطالبات (Claims) المستخدم
+            // 1.   (Claims) 
             var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
@@ -44,7 +49,7 @@ namespace Application.LDAP
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-            // 2. إنشاء بيانات الاعتماد (Credentials)
+            // 2.  (Credentials)
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
 
             // 3. وصف التوكن
@@ -64,6 +69,41 @@ namespace Application.LDAP
             // 5. إرجاع التوكن كسلسلة
             return tokenHandler.WriteToken(token);
         }
+
+        public void AddToBlackListToken(string token)
+        {
+
+            var expiration = TimeSpan.Parse(_configuration["Jwt:Expiration"] ?? "01:00:00");
+            _cache.Set(token, "blacklisted", new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = expiration
+            });
+
+           
+        }
+      
+
+
+
+
+        public bool IsBlackListToken(string token)
+        {
+            return _cache.TryGetValue(token, out _);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 

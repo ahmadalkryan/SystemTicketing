@@ -21,6 +21,8 @@ namespace Application
             services.AddAutoMapper(typeof(TicketTraceProfile).Assembly);
             services.AddAutoMapper(typeof(DeviceCategoryProfile).Assembly);
             services.AddAutoMapper(typeof(NotificationProfile).Assembly);
+      //     services. AddSingleton<ITokenBlacklistService, TokenBlacklistService>();
+
 
             return services;
 

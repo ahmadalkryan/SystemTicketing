@@ -1,4 +1,4 @@
-﻿namespace SystemTicketing.EmailService.EmailConfig
+﻿namespace Infrastructure.EmailService.EmailConfig
 {
     public class EmailConfiguration
     {

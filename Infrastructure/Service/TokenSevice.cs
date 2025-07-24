@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.LDAP;
+using Domain.Entities;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -10,9 +11,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.LDAP
+namespace Infrastructure
 {
-    public class TokenService
+    public class TokenService:ITokenService
     {
         private readonly IConfiguration _configuration;
         private readonly SymmetricSecurityKey _key;
@@ -50,24 +51,33 @@ namespace Application.LDAP
         };
 
             // 2.  (Credentials)
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             // 3. وصف التوكن
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(_expiryMinutes),
-                SigningCredentials = creds,
-                Issuer = _issuer,
-                Audience = _audience
-            };
+            //var tokenDescriptor = new SecurityTokenDescriptor
+            //{
+            //    Subject = new ClaimsIdentity(claims),
+            //    Expires = DateTime.UtcNow.AddMinutes(_expiryMinutes),
+            //    SigningCredentials = creds,
+            //    Issuer = _issuer,
+            //    Audience = _audience
+            //};
+            var tokenDescriptor = new JwtSecurityToken(
+                claims: claims,
+                issuer:_issuer,
+                audience:_audience,
+                expires: DateTime.UtcNow.AddMinutes(_expiryMinutes),
+                signingCredentials:creds
 
+                );
+            
             // 4. إنشاء التوكن
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            //var tokenHandler = new JwtSecurityTokenHandler();
+            //var token = tokenHandler.CreateToken(tokenDescriptor);
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
             // 5. إرجاع التوكن كسلسلة
-            return tokenHandler.WriteToken(token);
+            return token;
         }
 
         public void AddToBlackListToken(string token)
@@ -83,9 +93,6 @@ namespace Application.LDAP
         }
       
 
-
-
-
         public bool IsBlackListToken(string token)
         {
             return _cache.TryGetValue(token, out _);
@@ -94,17 +101,8 @@ namespace Application.LDAP
 
 
 
-
-
-
-
-
-
-
-
-
-
     }
 
 
 }
+ 

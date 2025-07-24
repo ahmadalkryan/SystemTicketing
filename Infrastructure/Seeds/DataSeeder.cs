@@ -29,22 +29,26 @@ namespace Infrastructure.Seeds
                 shouldSave = false;
                 _context.SaveChanges();
             }
-           
 
-            if(!_context.Roles.Any())
+
+            if (!_context.Roles.Any())
             {
                 var roles = new List<Role>
                 {
+                    
                     new Role
                     {
+                        Id="1",
                         Name="Employee"
                     },
                     new Role
                     {
+                        Id="2",
                         Name ="MaintenanceEmployee"
                     },
                     new Role
                     {
+                        Id="3",
                         Name ="MaintenanceManger"
                     }
                 };
@@ -59,6 +63,7 @@ namespace Infrastructure.Seeds
                 shouldSave = false;
                 _context.SaveChanges();
             }
+
 
             // 2. Seed TicketStatuses
             if (!_context.TicketStatuses.Any())
@@ -102,18 +107,22 @@ namespace Infrastructure.Seeds
                 var users = new List<User>
     {
         new User {
+            UserId ="1",
             Name = "Admin User",
             Department = "IT",
             Email = "admin@example.com",
             Password = BCrypt.Net.BCrypt.HashPassword("Admin@123")
         },
         new User {
+            UserId ="2",
             Name = "Tech Staff",
             Department = "Maintenance",
             Email = "tech@example.com",
             Password = BCrypt.Net.BCrypt.HashPassword("Tech@456")
         },
+
         new User {
+            UserId = "3",
             Name = "End User",
             Department = "Sales",
             Email = "user@example.com",
@@ -124,80 +133,113 @@ namespace Infrastructure.Seeds
                 shouldSave = true;
             }
 
+            ////user Role 
+            //if (!_context.UserRoles.Any())
+            //{
+            //    _context.UserRoles.AddRange(
+
+            //        new UserRole
+            //        {
+            //            UserId="1",
+            //            RoleId="1",
+            //        },
+            //        new UserRole
+            //        {
+            //            UserId="2",
+            //            RoleId="2",
+            //        },
+            //        new UserRole
+            //        {
+            //            UserId="3",
+            //            RoleId="3",
+            //        }
+
+
+            //        );
+            //    shouldSave = true;
+            //}
+            //if (shouldSave)
+            //{
+            //    _context.SaveChanges();
+            //    shouldSave = false;
+            //}
+
+
+            //if (!_context.Tickets.Any())
+            //{
+            //    var newTicket = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.New);
+            //    var pendingTicket = _context.TicketStatuses.First(u => u.StatusName == TicketStatusEnum.Pending);
+            //    var adminUser = _context.Users.First(u => u.Email == "admin@example.com");
+
+            //    _context.Tickets.AddRange(
+            //        new Ticket
+            //        {
+            //            TicketNumber = "TICKET-001",
+            //            Description = "Monitor not working",
+            //            AttachmentPath = "/attachments/monitor.jpg",
+            //            CreatedDate = DateTime.UtcNow.AddDays(-2),
+            //            UpdatedDate = DateTime.UtcNow.AddDays(-1),
+            //            _status= newTicket
+            //        },
+            //        new Ticket
+            //        {
+            //            TicketNumber = "TICKET-002",
+            //            Description = "Keyboard keys stuck",
+            //            AttachmentPath = "",
+            //            CreatedDate = DateTime.UtcNow.AddHours(-3),
+            //            UpdatedDate = DateTime.UtcNow.AddHours(-1),
+            //            _status = pendingTicket
+            //        }
+            //    );
+            //    shouldSave = true;
+            //}
 
 
 
-            if (!_context.Tickets.Any())
-            {
-                var newTicket = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.New);
-                var pendingTicket = _context.TicketStatuses.First(u => u.StatusName == TicketStatusEnum.Pending);
-                var adminUser = _context.Users.First(u => u.Email == "admin@example.com");
-
-                _context.Tickets.AddRange(
-                    new Ticket
-                    {
-                        TicketNumber = "TICKET-001",
-                        Description = "Monitor not working",
-                        AttachmentPath = "/attachments/monitor.jpg",
-                        CreatedDate = DateTime.UtcNow.AddDays(-2),
-                        UpdatedDate = DateTime.UtcNow.AddDays(-1),
-                        _status= newTicket
-                    },
-                    new Ticket
-                    {
-                        TicketNumber = "TICKET-002",
-                        Description = "Keyboard keys stuck",
-                        AttachmentPath = "",
-                        CreatedDate = DateTime.UtcNow.AddHours(-3),
-                        UpdatedDate = DateTime.UtcNow.AddHours(-1),
-                        _status = pendingTicket
-                    }
-                );
-                shouldSave = true;
-            }
-
-
-
-            if (shouldSave)
-            {
-                _context.SaveChanges();
-                shouldSave = false;
-            }
+            //if (shouldSave)
+            //{
+            //    _context.SaveChanges();
+            //    shouldSave = false;
+            //}
 
 
 
 
-            if (!_context.TicketTraces.Any())
-            {
-                var tickets = _context.Tickets.ToList();
-                var admin = _context.Users.First(u => u.Email == "admin@example.com");
-                var inProgress = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.Pending);
+            //if (!_context.TicketTraces.Any())
+            //{
+            //    var tickets = _context.Tickets.ToList();
+            //    var admin = _context.Users.First(u => u.Email == "admin@example.com");
+            //    var inProgress = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.Pending);
 
-                foreach (var ticket in tickets)
-                {
-                    _context.TicketTraces.Add(new TicketTrace
-                    {
-                        Note = $"Ticket created by {admin.Name}",
-                        CreateTime = ticket.CreatedDate,
-                        UpdateTime = ticket.CreatedDate,
-                        _ticket = ticket,
-                        _user = admin,
-                        _ticketStatus = ticket._status,
-                    });
+            //    foreach (var ticket in tickets)
+            //    {
+            //        _context.TicketTraces.Add(new TicketTrace
+            //        {
+            //            Note = $"Ticket created by {admin.Name}",
+            //            CreateTime = ticket.CreatedDate,
+            //            UpdateTime = ticket.CreatedDate,
+            //            _ticket = ticket,
+            //            _user = admin,
+            //            _ticketStatus = ticket._status,
+            //        });
 
-                    // Add status update trace
-                    _context.TicketTraces.Add(new TicketTrace
-                    {
-                        Note = "Started troubleshooting",
-                        CreateTime = DateTime.UtcNow,
-                        UpdateTime = DateTime.UtcNow,
-                        _ticket = ticket,
-                        _user = admin,
-                        _ticketStatus = inProgress
-                    });
-                }
-                shouldSave = true;
-            }
+            //        // Add status update trace
+            //        _context.TicketTraces.Add(new TicketTrace
+            //        {
+            //            Note = "Started troubleshooting",
+            //            CreateTime = DateTime.UtcNow,
+            //            UpdateTime = DateTime.UtcNow,
+            //            _ticket = ticket,
+            //            _user = admin,
+            //            _ticketStatus = inProgress
+            //        });
+            //    }
+            //    shouldSave = true;
+            //}
+            //if (shouldSave)
+            //{
+            //    _context.SaveChanges();
+            //}
 
 
 
@@ -224,11 +266,7 @@ namespace Infrastructure.Seeds
             //}
 
             // Final save if any changes were made
-            if (shouldSave)
-            {
-                _context.SaveChanges();
-            }
-           
+
 
 
 

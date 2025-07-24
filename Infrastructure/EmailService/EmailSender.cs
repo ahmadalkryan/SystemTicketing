@@ -2,10 +2,12 @@
 using MimeKit;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using SystemTicketing.EmailService;
-using SystemTicketing.EmailService.EmailConfig;
 
-namespace SystemTicketing.EmailService { 
+using Infrastructure.EmailService.EmailConfig;
+using Application.IService;
+
+namespace Infrastructure.EmailService { 
+
 public class EmailSender : IEmailService
 {
     private readonly EmailConfiguration _emailConfig;

@@ -6,6 +6,7 @@ using Application.LDAP;
 using Application.Serializer;
 using AutoMapper;
 using Domain.Entities;
+using Infrastructure;
 using Infrastructure.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,10 +24,10 @@ namespace SystemTicketing.Controllers
         private readonly IUserService _userService;
         private readonly AutenticationServices _authenticationService;
         private readonly IMapper _mapper;
-        private readonly TokenService _tokenSevice ;
+        private readonly ITokenService _tokenSevice ;
         private readonly IJsonFieldsSerializer _jsonFieldsSerializer ;
         public AuthController(IUserService userService , AutenticationServices authenticationService,IMapper mapper,
-            IJsonFieldsSerializer jsonFieldsSerializer, TokenService tokenSevice)
+            IJsonFieldsSerializer jsonFieldsSerializer, ITokenService tokenSevice)
         {
             _authenticationService = authenticationService;
             _mapper = mapper;
@@ -38,7 +39,11 @@ namespace SystemTicketing.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<AuthResponseDto>), StatusCodes.Status200OK)]
-        public  async Task<IActionResult> Login([FromBody]LoginDto loginDto)
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
         {
 
             //LdapUser user = AutenticationService._ldapUsers
@@ -74,7 +79,7 @@ namespace SystemTicketing.Controllers
                
             }
             var user = await _userService.GetUserByEmail(ldapUser.Email);
-            User newUser = new User
+            var newUser = new User
             {
                 UserId = user.UserId,
                 Name = ldapUser.Name,
@@ -84,7 +89,7 @@ namespace SystemTicketing.Controllers
             };
             var token = _tokenSevice.GenerateToken(newUser);
 
-        var result =    new AuthResponseDto
+        var result =  new AuthResponseDto
             {
                 Token = token,
                 UserId = newUser.UserId,
@@ -92,7 +97,8 @@ namespace SystemTicketing.Controllers
                 Email = newUser.Email,
                 Department = newUser.Department
             };
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.
+                Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
 
 
         }

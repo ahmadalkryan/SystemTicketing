@@ -19,21 +19,22 @@ namespace Infrastructure.Service
     public class NotificationService : INotificationService
     {
         private readonly IAppRepository<Notification> _appRepository;
+        private readonly IAppRepository<User> _userRepository;
         private readonly IMapper _mapper;
-        private readonly IHubContext<NotificationHub> _hubContext;
-        private readonly IEmailService _emailService;
-        private readonly ILogger _logger;
-        private readonly AppDbContext _app;
+       // private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly Application.IService.IEmailService _emailService;
+        private readonly ILogger<Notification> _logger;
+        //private readonly AppDbContext _app;
 
-        public NotificationService(IAppRepository<Notification> _rep ,IMapper _map, IHubContext<NotificationHub> hubContext ,
-            IEmailService emailService ,ILogger logger ,AppDbContext appContext) 
+        public NotificationService(IAppRepository<Notification> _rep ,IMapper _map ,
+            Application.IService.IEmailService emailService ,ILogger<Notification> logger,IAppRepository<User> appRepository ) 
         {
              _appRepository = _rep ;
             _mapper = _map ;
-            _hubContext = hubContext ;
+         ///   _hubContext = hubContext ;
             _emailService = emailService ;
             _logger = logger ;
-            _app = appContext ;
+           _userRepository = appRepository ;
         }
 
 
@@ -95,17 +96,19 @@ namespace Infrastructure.Service
 
             var NotDto = _mapper.Map<NotificationDto>(n);
 
-            //send Notification by SignalR
-                 await _hubContext.Clients
-                              .User(userID)          // send to specific user 
-                                        .SendAsync("ReceiveNotification", NotDto);
+            ////send Notification by SignalR
+            //     await _hubContext.Clients
+            //                  .User(userID)          // send to specific user 
+            //                            .SendAsync("ReceiveNotification", NotDto);
 
             // send Email 
             try
             {
                 // get Email For USER  ***************************
                 //*********************
-                var user = _app.Users.FirstOrDefault(x => x.UserId == userID);
+                //  Users.FirstOrDefault(x => x.UserId == userID);
+                var users = _userRepository.GetAllAsync();
+                 var user= users.Result.FirstOrDefault(x => x.UserId == userID);
 
                 //  string userEmail = await _userService.GetUserEmailById(userID);
 
@@ -114,7 +117,7 @@ namespace Infrastructure.Service
                 {
                     string emailSubject = " NEW Notification  " + message;
 
-                   await _emailService.SendAsync(userEmail, emailSubject,message);
+                   await _emailService.SendEmailAsync(userEmail, emailSubject,message);
                 }
             }
             catch (Exception ex)

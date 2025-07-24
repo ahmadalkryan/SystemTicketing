@@ -1,4 +1,5 @@
 using Application.IRepository;
+using Application.IService;
 using Infrastructure.Context;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +11,13 @@ using SystemTicketing;
 
 
 
+
 public class Program
 {
     public static void Main(string[] args)
     {
         CreateHostBuilder(args).Build().Run();
+        
     }
 
 
@@ -23,7 +26,7 @@ public class Program
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                webBuilder.UseStartup<StartUp>();
+                webBuilder.UseStartup<Startup>();
             });
 }
 

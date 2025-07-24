@@ -1,4 +1,4 @@
-﻿namespace SystemTicketing.EmailService
+﻿namespace Application.IService
 {
     public interface IEmailService
     {

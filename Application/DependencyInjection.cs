@@ -1,6 +1,11 @@
-﻿using Application.Mapping;
+﻿using Application.IService;
+using Application.LDAP;
+using Application.Mapping;
 using Application.Mapping.Notifiction;
+using Application.Mapping.RoleProfile;
 using Application.Mapping.TicketProfile;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -21,7 +26,17 @@ namespace Application
             services.AddAutoMapper(typeof(TicketTraceProfile).Assembly);
             services.AddAutoMapper(typeof(DeviceCategoryProfile).Assembly);
             services.AddAutoMapper(typeof(NotificationProfile).Assembly);
-      //     services. AddSingleton<ITokenBlacklistService, TokenBlacklistService>();
+            services.AddAutoMapper(typeof(RoleProfile).Assembly);
+            services.AddAutoMapper(typeof(UserProfile).Assembly);
+            services.AddAutoMapper(typeof(UserRoleProfile).Assembly);
+
+           // services.AddScoped<TokenService>();
+           // services.AddScoped<AuthenticationService>();
+            
+
+
+
+            //   services. AddSingleton<ITokenBlacklistService, TokenBlacklistService>();
 
 
             return services;

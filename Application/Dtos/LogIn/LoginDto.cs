@@ -13,8 +13,9 @@ namespace Application.Dtos.LogIn
 
          
         [Required(ErrorMessage="Required")]
-       public string username {  get; set; }
+       public string username {  get; set; } // change to Name 
         [Required(ErrorMessage = "Required")]
-        public  string password { get; set; }
+        public  string password { get; set; } // Password
+
     }
 }

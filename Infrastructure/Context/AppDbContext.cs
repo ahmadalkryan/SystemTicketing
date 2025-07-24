@@ -132,7 +132,7 @@ namespace Infrastructure.Context
      
             modelBuilder.Entity<User>(t=>{
                 t.ToTable("User").HasKey(t=>t.UserId);
-                t.Property(t => t.UserId).HasColumnName("user_id")
+                t.Property(t => t.UserId).HasColumnName("user_id")  //.ValueGeneratedOnAdd()
                 .HasColumnType("nvarchar(100)");
                 t.Property(t => t.Name).HasColumnName("name").
                 HasColumnType("nvarchar(20)").IsRequired();
@@ -165,8 +165,8 @@ namespace Infrastructure.Context
                 t =>
                 {
 
-                    t.ToTable("Role").HasKey(t=>t.Id);
-                    t.Property(t => t.Id).HasColumnName("id").HasColumnType("nvarchar(30)");
+                    t.ToTable("Role").HasKey(t => t.Id);
+                    t.Property(t => t.Id).HasColumnName("id").HasColumnType("nvarchar(30)"); //.ValueGeneratedOnAdd();
                     t.Property(t => t.Name).HasColumnName("Name").HasColumnType("nvarchar(20)").IsRequired();
                 }
                 

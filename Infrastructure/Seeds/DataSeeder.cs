@@ -1,15 +1,16 @@
-﻿using DataAccessLyer.Enum;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Enum;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto.Generators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
 
 namespace Infrastructure.Seeds
 {
@@ -44,12 +45,12 @@ namespace Infrastructure.Seeds
                     new Role
                     {
                         Id="2",
-                        Name ="MaintenanceEmployee"
+                        Name ="Maintenance"
                     },
                     new Role
                     {
                         Id="3",
-                        Name ="MaintenanceManger"
+                        Name ="Admin"
                     }
                 };
 
@@ -111,14 +112,14 @@ namespace Infrastructure.Seeds
             Name = "Admin User",
             Department = "IT",
             Email = "admin@example.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("Admin@123")
+            Password = BCrypt.Net.BCrypt.HashPassword("Adm23")
         },
         new User {
             UserId ="2",
             Name = "Tech Staff",
             Department = "Maintenance",
             Email = "tech@example.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("Tech@456")
+            Password = BCrypt.Net.BCrypt.HashPassword("Tec56")
         },
 
         new User {
@@ -126,81 +127,52 @@ namespace Infrastructure.Seeds
             Name = "End User",
             Department = "Sales",
             Email = "user@example.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("User@789")
+            Password = BCrypt.Net.BCrypt.HashPassword("Us789")
         }
     };
                 _context.Users.AddRange(users);
                 shouldSave = true;
+                
+               
+            }
+            if (shouldSave)
+            {
+                _context.SaveChanges();
+                shouldSave = false;
             }
 
-            ////user Role 
-            //if (!_context.UserRoles.Any())
-            //{
-            //    _context.UserRoles.AddRange(
-
-            //        new UserRole
-            //        {
-            //            UserId="1",
-            //            RoleId="1",
-            //        },
-            //        new UserRole
-            //        {
-            //            UserId="2",
-            //            RoleId="2",
-            //        },
-            //        new UserRole
-            //        {
-            //            UserId="3",
-            //            RoleId="3",
-            //        }
 
 
-            //        );
-            //    shouldSave = true;
-            //}
-            //if (shouldSave)
-            //{
-            //    _context.SaveChanges();
-            //    shouldSave = false;
-            //}
+            //user Role 
+            if (!_context.UserRoles.Any())
+            {
+                _context.UserRoles.AddRange(
+
+                    new UserRole
+                    {
+                        UserId = "1",
+                        RoleId = "1",
+                    },
+                    new UserRole
+                    {
+                        UserId = "2",
+                        RoleId = "2",
+                    },
+                    new UserRole
+                    {
+                        UserId = "3",
+                        RoleId = "3",
+                    }
 
 
-            //if (!_context.Tickets.Any())
-            //{
-            //    var newTicket = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.New);
-            //    var pendingTicket = _context.TicketStatuses.First(u => u.StatusName == TicketStatusEnum.Pending);
-            //    var adminUser = _context.Users.First(u => u.Email == "admin@example.com");
-
-            //    _context.Tickets.AddRange(
-            //        new Ticket
-            //        {
-            //            TicketNumber = "TICKET-001",
-            //            Description = "Monitor not working",
-            //            AttachmentPath = "/attachments/monitor.jpg",
-            //            CreatedDate = DateTime.UtcNow.AddDays(-2),
-            //            UpdatedDate = DateTime.UtcNow.AddDays(-1),
-            //            _status= newTicket
-            //        },
-            //        new Ticket
-            //        {
-            //            TicketNumber = "TICKET-002",
-            //            Description = "Keyboard keys stuck",
-            //            AttachmentPath = "",
-            //            CreatedDate = DateTime.UtcNow.AddHours(-3),
-            //            UpdatedDate = DateTime.UtcNow.AddHours(-1),
-            //            _status = pendingTicket
-            //        }
-            //    );
-            //    shouldSave = true;
-            //}
-
-
-
-            //if (shouldSave)
-            //{
-            //    _context.SaveChanges();
-            //    shouldSave = false;
-            //}
+                    );
+                shouldSave = true;
+            }
+            if (shouldSave)
+            {
+                _context.SaveChanges();
+                shouldSave = false;
+            }
 
 
 
@@ -243,6 +215,18 @@ namespace Infrastructure.Seeds
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
             //if (!_context.Notifications.Any())
             //{
             //    var ticket = _context.Tickets.First();
@@ -271,6 +255,34 @@ namespace Infrastructure.Seeds
 
 
 
+            //if (!_context.Tickets.Any())
+            //{
+            //    var newTicket = _context.TicketStatuses.First(s => s.StatusName == TicketStatusEnum.New);
+            //    var pendingTicket = _context.TicketStatuses.First(u => u.StatusName == TicketStatusEnum.Pending);
+            //    var adminUser = _context.Users.First(u => u.Email == "admin@example.com");
+
+            //    _context.Tickets.AddRange(
+            //        new Ticket
+            //        {
+            //            TicketNumber = "TICKET-001",
+            //            Description = "Monitor not working",
+            //            AttachmentPath = "/attachments/monitor.jpg",
+            //            CreatedDate = DateTime.UtcNow.AddDays(-2),
+            //            UpdatedDate = DateTime.UtcNow.AddDays(-1),
+            //            _status= newTicket
+            //        },
+            //        new Ticket
+            //        {
+            //            TicketNumber = "TICKET-002",
+            //            Description = "Keyboard keys stuck",
+            //            AttachmentPath = "",
+            //            CreatedDate = DateTime.UtcNow.AddHours(-3),
+            //            UpdatedDate = DateTime.UtcNow.AddHours(-1),
+            //            _status = pendingTicket
+            //        }
+            //    );
+            //    shouldSave = true;
+            //}
 
 
 

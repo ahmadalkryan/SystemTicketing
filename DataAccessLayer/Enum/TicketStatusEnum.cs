@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLyer.Enum
+namespace Domain.Enum
 {
     public enum TicketStatusEnum
     {

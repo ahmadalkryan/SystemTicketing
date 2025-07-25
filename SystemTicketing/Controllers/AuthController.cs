@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace SystemTicketing.Controllers
 {
@@ -108,6 +109,83 @@ namespace SystemTicketing.Controllers
         }
 
 
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(ApiResponse<AuthResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
+
+
+        public async Task<IActionResult> profile()
+        {
+
+            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
+            var name =User.FindFirst(JwtRegisteredClaimNames.Name)?.Value;
+            var department =User.FindFirst("department ")?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new ApiResponse(
+
+                     false,
+            "User ID not found in token",
+            StatusCodes.Status401Unauthorized,
+            null));
+            }
+
+               var userdto = await  _userService.GetUserById(userId);
+            if (userdto == null)
+            {
+                return NotFound(new ApiResponse(
+            false,
+            "User not found",
+            StatusCodes.Status404NotFound,
+            null));
+            }
+            var roleDto = await _roleService.GetRoleByUserId(userId);
+
+            var result = new AuthResponseDto
+            {
+                userId = userId,
+                FullName=name ,
+                Email = email,
+                Department =department,
+                role = roleDto.Name,
+            };
+
+
+
+            return new RawJsonActionResult(_jsonFieldsSerializer.
+                Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpPost("logout")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
@@ -152,37 +230,72 @@ namespace SystemTicketing.Controllers
            
         }
 
-        //[HttpPost]
-        //[Authorize]
-        //[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
-        //public IActionResult Logout()
-        //{
-        //    var header = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-
-        //    if (!string.IsNullOrEmpty(header)&&header.StartsWith("Berear "))
-        //    {
-        //        var token = header.Substring("Bearer ".Length).Trim();
-        //        _tokenSevice.AddToBlackListToken(token);
-        //    }
-
-
-
-
-
-        //    return Ok();
-
-        //    //return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(
-        //    //    new ApiResponse(true, "logOut Success", StatusCodes.Status200OK,"Token")));
-        //}
-
-
-
-
-
-
-
-
-
+      
 
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//[HttpPost]
+//[Authorize]
+//[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
+//public IActionResult Logout()
+//{
+//    var header = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+//    if (!string.IsNullOrEmpty(header)&&header.StartsWith("Berear "))
+//    {
+//        var token = header.Substring("Bearer ".Length).Trim();
+//        _tokenSevice.AddToBlackListToken(token);
+//    }
+
+
+
+
+
+//    return Ok();
+
+//    //return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(
+//    //    new ApiResponse(true, "logOut Success", StatusCodes.Status200OK,"Token")));
+//}
+

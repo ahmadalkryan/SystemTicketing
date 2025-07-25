@@ -50,7 +50,7 @@ namespace Infrastructure.Context
                 .HasColumnName("CreateDate").IsRequired();
                 t.Property(t => t.UpdatedDate).HasColumnName("updateDate")
                 .HasColumnType("datetime2(7)");
-                t.Property(t => t.AttachmentPath).HasColumnType("nvarchar(50)").
+                t.Property(t => t.AttachmentPath).HasColumnType("nvarchar(100)").
                 HasColumnName("AttachementPath").IsRequired();
                 t.Property(t => t.Description).HasColumnName("Description")
                 .HasColumnType("nvarchar(100)").IsRequired();
@@ -67,10 +67,10 @@ namespace Infrastructure.Context
                 d.ToTable("DeviceCategory").HasKey(t => t.Id);
                 d.Property(t => t.Id).ValueGeneratedOnAdd().HasColumnName("ID");
 
-                d.Property(t => t.CategoryName).HasColumnType("nvarchar(30)").
+                d.Property(t => t.CategoryName).HasColumnType("nvarchar(40)").
                 HasColumnName("Name").IsRequired();
                 d.Property(t => t.Abbreviation).
-                HasColumnName("abbreviation").HasColumnType("nvarchar(20)").IsRequired();
+                HasColumnName("abbreviation").HasColumnType("nvarchar(50)").IsRequired();
 
 
 
@@ -80,7 +80,7 @@ namespace Infrastructure.Context
                 t.ToTable("TicketStatus").HasKey(d => d.Id);
                 t.Property(t => t.Id).ValueGeneratedOnAdd().HasColumnName("id");
                 t.Property(t => t.StatusName).HasConversion<string>()
-                .HasColumnName("Name").IsRequired().HasColumnType("nvarchar(10)");
+                .HasColumnName("Name").IsRequired().HasColumnType("nvarchar(80)");
 
             });
             modelBuilder.Entity<Notification>(t =>
@@ -89,7 +89,7 @@ namespace Infrastructure.Context
                 t.Property(t=>t.Id).ValueGeneratedOnAdd ().HasColumnName("Id");
 
                 t.Property(t => t.Message).HasColumnName("Message").
-                HasColumnType("nvarchar(40)").IsRequired();
+                HasColumnType("nvarchar(200)").IsRequired();
                 t.Property(t=>t.IsRead).HasColumnName("IsRead")
                 .HasDefaultValue(false).IsRequired();
 
@@ -109,7 +109,7 @@ namespace Infrastructure.Context
                 {
                     t.ToTable("TicketTrace").HasKey(t=>t.Id);
                     t.Property(t => t.Id).ValueGeneratedOnAdd().HasColumnName("Id");
-                    t.Property(t => t.Note).HasColumnName("Note").HasColumnType("nvarchar(50)").IsRequired();
+                    t.Property(t => t.Note).HasColumnName("Note").HasColumnType("nvarchar(100)").IsRequired();
                     t.Property(t => t.CreateTime).HasColumnName("CreateTime").HasColumnType("datetime2(7)").IsRequired();
                     t.Property(t => t.UpdateTime).HasColumnName("UpdateTime").HasColumnType("datetime2(7)");
                     //   t.Property(t => t.NewStatusID).HasColumnName("NewStatus");
@@ -129,49 +129,109 @@ namespace Infrastructure.Context
                 }
                 
                 );
-     
-            modelBuilder.Entity<User>(t=>{
-                t.ToTable("User").HasKey(t=>t.UserId);
-                t.Property(t => t.UserId).HasColumnName("user_id")  //.ValueGeneratedOnAdd()
-                .HasColumnType("nvarchar(100)");
-                t.Property(t => t.Name).HasColumnName("name").
-                HasColumnType("nvarchar(20)").IsRequired();
-                t.Property(t => t.Department).HasColumnName("Department")
-                .HasColumnType("nvarchar(20)").IsRequired();
-
-                t.Property(t => t.Email).HasColumnName("Email").
-                HasColumnType("nvarchar(20)").IsRequired();
-
-                t.Property(t => t.Password).HasColumnType("nvarchar(10)").
-                HasColumnName("Password").IsRequired();
-
-                
+            modelBuilder.Entity<User>(t => {
+                t.ToTable("User").HasKey(t => t.UserId);
+                t.Property(t => t.UserId)
+                    .HasColumnName("user_id")
+                    .HasColumnType("nvarchar(100)");
+                t.Property(t => t.Name)
+                    .HasColumnName("name")
+                    .HasColumnType("nvarchar(100)")
+                    .IsRequired();
+                t.Property(t => t.Department)
+                    .HasColumnName("Department")
+                    .HasColumnType("nvarchar(100)")
+                    .IsRequired();
+                t.Property(t => t.Email)
+                    .HasColumnName("Email")
+                    .HasColumnType("nvarchar(100)")
+                    .IsRequired();
+                t.Property(t => t.Password)
+                    .HasColumnType("nvarchar(100)")
+                    .HasColumnName("Password")
+                    .IsRequired();
             });
 
-            modelBuilder.Entity<UserRole>(
-                t =>
-                {
-                    t.ToTable("UserRole").HasKey(t => new {t.RoleId,t.UserId});
-                    t.HasOne(t=>t._user).WithMany(t=>t.UserRoles).HasForeignKey(t=>t.UserId).OnDelete(DeleteBehavior.NoAction);
-                    t.Property(t => t.UserId).HasColumnName("user_id").HasColumnType("nvarchar(100)");
+            modelBuilder.Entity<Role>(t => {
+                t.ToTable("Role").HasKey(t => t.Id);
+                t.Property(t => t.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("nvarchar(100)");
+                t.Property(t => t.Name)
+                    .HasColumnName("Name")
+                    .HasColumnType("nvarchar(100)")
+                    .IsRequired();
+            });
 
-                    t.HasOne(t => t._role).WithMany(t => t.UserRoles).HasForeignKey(t => t.RoleId).OnDelete(DeleteBehavior.NoAction);
-                    t.Property(t=>t.RoleId).HasColumnName("Role_id");
+            modelBuilder.Entity<UserRole>(t =>
+            {
+                t.ToTable("UserRole").HasKey(t => new { t.RoleId, t.UserId });
+
+                // العلاقة مع User
+                t.HasOne(t => t._user)
+                    .WithMany(t => t.UserRoles)
+                    .HasForeignKey(t => t.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                t.Property(t => t.UserId)
+                    .HasColumnName("user_id")
+                    .HasColumnType("nvarchar(100)");
+
+                // العلاقة مع Role - تأكد من تطابق الأسماء
+                t.HasOne(t => t._role)
+                    .WithMany(t => t.UserRoles)
+                    .HasForeignKey(t => t.RoleId)  // استخدم RoleId بدلاً من Role_id
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                t.Property(t => t.RoleId)
+                    .HasColumnName("Role_id")  // هذا هو اسم العمود في قاعدة البيانات
+                    .HasColumnType("nvarchar(100)")
+                    .IsRequired();
+            });
+
+            //modelBuilder.Entity<User>(t=>{
+            //    t.ToTable("User").HasKey(t=>t.UserId);
+            //    t.Property(t => t.UserId).HasColumnName("user_id")  
+            //    .HasColumnType("nvarchar(100)");
+            //    t.Property(t => t.Name).HasColumnName("name").
+            //    HasColumnType("nvarchar(100)").IsRequired();
+            //    t.Property(t => t.Department).HasColumnName("Department")
+            //    .HasColumnType("nvarchar(100)").IsRequired();
+
+            //    t.Property(t => t.Email).HasColumnName("Email").
+            //    HasColumnType("nvarchar(100)").IsRequired();
+
+            //    t.Property(t => t.Password).HasColumnType("nvarchar(100)").
+            //    HasColumnName("Password").IsRequired();
+
+
+            //});
+            //modelBuilder.Entity<Role>(
+            //    t =>
+            //    {
+
+            //        t.ToTable("Role").HasKey(t => t.Id);
+            //        t.Property(t => t.Id).HasColumnName("id").HasColumnType("nvarchar(100)"); 
+            //        t.Property(t => t.Name).HasColumnName("Name").HasColumnType("nvarchar(100)").IsRequired();
+            //    }
+
+
+            //    );
+
+            //modelBuilder.Entity<UserRole>(
+            //    t =>
+            //    {
+            //        t.ToTable("UserRole").HasKey(t => new {t.RoleId,t.UserId});
+            //        t.HasOne(t => t._user).WithMany(t => t.UserRoles).HasForeignKey(t => t.UserId);
+            //        t.Property(t => t.UserId).HasColumnName("user_id").HasColumnType("nvarchar(100)");
+
+            //        t.HasOne(t => t._role).WithMany(t => t.UserRoles).HasForeignKey(t => t.RoleId);
+            //        t.Property(t => t.RoleId).HasColumnName("Role_id").HasColumnType("nvarchar(100)").IsRequired();
 
 
 
-                });
-            modelBuilder.Entity<Role>(
-                t =>
-                {
+            //    });
 
-                    t.ToTable("Role").HasKey(t => t.Id);
-                    t.Property(t => t.Id).HasColumnName("id").HasColumnType("nvarchar(30)"); //.ValueGeneratedOnAdd();
-                    t.Property(t => t.Name).HasColumnName("Name").HasColumnType("nvarchar(20)").IsRequired();
-                }
-                
-                
-                );           
         }
     }
  }

@@ -13,13 +13,17 @@ namespace Application.LDAP
         [Required]
             public string Token { get; set; }
         [Required]
-        public string UserId { get; set; }
+        public string userId { get; set; }
         [Required]
         public string FullName { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
         public string Department { get; set; }
+
+        [Required ]
+
+        public string role { get; set; }
         
     }
 }

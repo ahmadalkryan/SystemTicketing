@@ -15,5 +15,6 @@ namespace Application.IService
         Task<RoleDto> DeleteRole(string roleId);
 
         Task<IEnumerable<RoleDto>> GetAllRoles();
+        Task<RoleDto> GetRoleByUserId(string userId);
     }
 }

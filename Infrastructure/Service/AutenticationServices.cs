@@ -12,6 +12,7 @@ namespace Infrastructure
     public class AutenticationServices
     {
         private readonly IUserService _userService;
+       
         public AutenticationServices(IUserService userService)
         {
             _userService = userService;

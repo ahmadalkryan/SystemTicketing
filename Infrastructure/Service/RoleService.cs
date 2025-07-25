@@ -16,11 +16,13 @@ namespace Infrastructure.Service
         private readonly  IAppRepository<Role> _appRepository;
 
         private readonly IMapper _mapper;
+        private readonly IUserRoleService _userRoleService;
 
-        public RoleService(IAppRepository<Role > appRepository ,IMapper mapper)
+        public RoleService(IAppRepository<Role > appRepository ,IMapper mapper ,IUserRoleService roleService)
         {
             _appRepository = appRepository;
             _mapper = mapper;
+            _userRoleService = roleService;
         }
 
 
@@ -51,5 +53,22 @@ namespace Infrastructure.Service
             await _appRepository.Insertasync(r);
             return _mapper.Map<RoleDto>(r);
         }
+
+      public async  Task<RoleDto> GetRoleByUserId(string userId)
+        {
+            var userRole = await _userRoleService.GetAllUserRole();
+
+             var Userrole = userRole.FirstOrDefault(x=>x.UserId==userId);
+
+            var roleId = Userrole.RoleId;
+            var roles = await GetAllRoles();
+
+            var role = roles.FirstOrDefault(x => x.Id == roleId);
+            return _mapper.Map<RoleDto>(role);
+
+
+        }
+
+
     }
 }

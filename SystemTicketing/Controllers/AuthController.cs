@@ -22,18 +22,20 @@ namespace SystemTicketing.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
         private readonly AutenticationServices _authenticationService;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenSevice ;
         private readonly IJsonFieldsSerializer _jsonFieldsSerializer ;
         public AuthController(IUserService userService , AutenticationServices authenticationService,IMapper mapper,
-            IJsonFieldsSerializer jsonFieldsSerializer, ITokenService tokenSevice)
+            IJsonFieldsSerializer jsonFieldsSerializer, ITokenService tokenSevice, IRoleService roleService)
         {
             _authenticationService = authenticationService;
             _mapper = mapper;
             _userService = userService;
             _tokenSevice = tokenSevice;
             _jsonFieldsSerializer = jsonFieldsSerializer;
+            _roleService = roleService;
         }
 
 
@@ -88,14 +90,16 @@ namespace SystemTicketing.Controllers
                 Department = ldapUser.Department,
             };
             var token = _tokenSevice.GenerateToken(newUser);
-
+            var roledto =   await   _roleService.GetRoleByUserId(user.UserId);
+           
         var result =  new AuthResponseDto
             {
                 Token = token,
-                UserId = newUser.UserId,
+                userId = newUser.UserId,
                 FullName = newUser.Name,
                 Email = newUser.Email,
-                Department = newUser.Department
+                Department = newUser.Department,
+                role=roledto.Name
             };
             return new RawJsonActionResult(_jsonFieldsSerializer.
                 Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));

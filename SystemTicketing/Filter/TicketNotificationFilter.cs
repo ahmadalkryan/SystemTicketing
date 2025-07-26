@@ -1,7 +1,10 @@
-﻿using Application.Dtos.Ticket;
+﻿using Application.Dtos.Action;
+using Application.Dtos.Ticket;
 using Application.Dtos.TicketTraceDto;
+using Application.IRepository;
 using Application.IService;
 using Application.Serializer;
+using Domain.Entities;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -12,9 +15,11 @@ public class TicketNotificationFilter : IAsyncActionFilter
 {
     private readonly INotificationService _notificationService;
     private readonly AppDbContext _dbContext;
+    private readonly IAppRepository<User> _app;
     private readonly ILogger<TicketNotificationFilter> _logger;
 
     public TicketNotificationFilter(
+        IAppRepository<User> app,
         INotificationService notificationService,
         AppDbContext dbContext,
         ILogger<TicketNotificationFilter> logger)
@@ -22,6 +27,7 @@ public class TicketNotificationFilter : IAsyncActionFilter
         _notificationService = notificationService;
         _dbContext = dbContext;
         _logger = logger;
+        _app=app;
     }
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -40,23 +46,36 @@ public class TicketNotificationFilter : IAsyncActionFilter
         {
             if (controllerName == "Ticket" && actionName == "InsertTicket")
             {
-                if (resultContext.Result is ObjectResult objectResult &&
-                    objectResult.Value is ApiResponse<TicketDto> apiResponse &&
-                    apiResponse.Result &&
-                    apiResponse.Data != null)
+                if(resultContext.Result is RawJsonActionResult rawJsonResult)
                 {
-                    await HandleNewTicket(apiResponse.Data);
+
+                    var jsonString = rawJsonResult.Value();       
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<TicketDto>>(jsonString);
+
+                    if (apiResponse != null && apiResponse.Result && apiResponse.Data != null)
+                    {
+                        await HandleNewTicket(apiResponse.Data);
+                    }
+
                 }
+                    
+                
             }
             else if (controllerName == "TicketTrace" && actionName == "InsertTicketTrace")
             {
-                if (resultContext.Result is ObjectResult objectResult &&
-                    objectResult.Value is ApiResponse<TicketTraceDto> apiResponse &&
-                    apiResponse.Result &&
-                    apiResponse.Data != null)
+                if (resultContext.Result is RawJsonActionResult rawJsonResult)
                 {
-                    await HandleTicketUpdate(apiResponse.Data);
+
+                    var jsonString = rawJsonResult.Value();
+                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<TicketTraceDto>>(jsonString);
+
+                    if (apiResponse != null && apiResponse.Result && apiResponse.Data != null)
+                    {
+                        await HandleTicketUpdate(apiResponse.Data);
+                    }
+
                 }
+               
             }
         }
         catch (Exception ex)
@@ -67,26 +86,18 @@ public class TicketNotificationFilter : IAsyncActionFilter
 
     private async Task HandleNewTicket(TicketDto ticketDto)
     {
-        var maintenanceManagers = await _dbContext.Users
-            .Include(u => u.UserRoles)
-            .ThenInclude(ur => ur._role)
-            .Where(u => u.UserRoles.Any(ur => ur._role.Name == "MaintenanceEmployee"))
-            .ToListAsync();
+        
 
-        //var manger = await _dbContext.Users.Include(u => u.UserRoles.
-        //Any(u => u._role.Name == "MaintenanceManager")).
-        //    Select(u => new
-        //    {
-        //        u.Name,
-        //        u.Email,
-        //        u.UserId,
-        //    }).ToListAsync();
+        var maintenanceManagers = await _dbContext.Users
+      .Where(u => u.UserRoles.Any(ur => ur._role.Name == "Maintenance"))
+                     .Select(u => u.UserId)     // get UserID
+                              .ToListAsync();
 
 
         foreach (var manager in maintenanceManagers)
         {
             await _notificationService.SendNotification(
-                manager.UserId,
+                manager,
                 $"Ticket created successfuly : #{ticketDto.TicketNumber}",
                 ticketDto.Id
             );

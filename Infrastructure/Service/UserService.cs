@@ -42,8 +42,9 @@ namespace Infrastructure.Service
 
         public async Task<UserDto> InsertUser(LdapUser user)
         {
-            await _repo.Insertasync(_mapper.Map<User>(user));
-            return _mapper.Map<UserDto>(user);
+            var usr = _mapper.Map<User>(user);
+            await _repo.Insertasync(usr);
+            return _mapper.Map<UserDto>(usr);
         }
 
       public  async Task<UserDto> GetUserByEmail(string email)

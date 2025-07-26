@@ -9,7 +9,7 @@ namespace Application.LDAP
     public class LdapUser
     {
         
-        public string ID { get; set; }
+        public string UserID { get; set; }
         public string Name { get; set; }
 
         public string Department { get; set; }

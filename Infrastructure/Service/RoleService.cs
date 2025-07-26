@@ -54,17 +54,17 @@ namespace Infrastructure.Service
             return _mapper.Map<RoleDto>(r);
         }
 
-      public async  Task<RoleDto> GetRoleByUserId(string userId)
+      public async Task<RoleDto> GetRoleByUserId(string userId)
         {
-            var userRole = await _userRoleService.GetAllUserRole();
+            var userRolesDto = await _userRoleService.GetAllUserRole();
 
-             var Userrole = userRole.FirstOrDefault(x=>x.UserId==userId);
+             var userRoleDto = userRolesDto.FirstOrDefault(x=>x.UserId==userId);
 
-            var roleId = Userrole.RoleId;
-            var roles = await GetAllRoles();
+            var roleId = userRoleDto.RoleId;
+            var rolesDto = await GetAllRoles();
 
-            var role = roles.FirstOrDefault(x => x.Id == roleId);
-            return _mapper.Map<RoleDto>(role);
+            var role = rolesDto.FirstOrDefault(x => x.Id == roleId);
+            return role;
 
 
         }

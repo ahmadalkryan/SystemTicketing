@@ -16,6 +16,6 @@ namespace Application.LDAP
         public string Email { get; set; }
 
         public string Password { get; set; }
-        // public string Role { get; set; } // "Employee" أو "MaintenanceManager" "MaintenanceEmployee" 
+        // public string Role { get; set; } // "Employee" أو "Maintenance" "Admin" 
     }
 }

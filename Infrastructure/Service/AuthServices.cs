@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.Service
 {
-    public class AutenticationServices
+    public class AuthServices
     {
         private readonly IUserService _userService;
        
-        public AutenticationServices(IUserService userService)
+        public AuthServices(IUserService userService)
         {
             _userService = userService;
 
@@ -22,7 +22,7 @@ namespace Infrastructure
         {
             new LdapUser
         {
-                ID ="1",
+                UserID ="1",
             Name = "emp1",
             Password = "emp1@123",
          //FullName = "محمد أحمد",
@@ -32,7 +32,7 @@ namespace Infrastructure
         },
             new LdapUser
         {
-                ID ="2",
+                UserID ="2",
             Name = "emp3",
             Password = "emp1@123",
          //FullName = "محمد أحمد",
@@ -42,7 +42,7 @@ namespace Infrastructure
         },
         new LdapUser
         {
-            ID ="3",
+            UserID ="3",
             Name = "maint1",
             Password = "maint@456",
           //  FullName = "علي محمود",
@@ -52,47 +52,56 @@ namespace Infrastructure
         },
          new LdapUser
         {
-            ID ="4",
-            Name = "maint1",
-            Password = "maint@456",
+           UserID ="4",
+            Name = "ahmad",
+            Password = "ahmad2004#",
           //  FullName = "علي محمود",
-            Department = "قسم الصيانة",
-            Email = "b.mahmoud@institute.edu",
+            Department = "IT",
+            Email = "ahmad.alkryan@hiast.edu.sy",
          //   Role = "MaintenanceManager"
         }
         };
 
-        public  bool Authenticate(LoginDto loginnDto)
+        public  bool Authenticate(LoginDto loginDto)
         {
-            var ldap = _ldapUsers.FirstOrDefault(x => x.Name == loginnDto.username && x.Password == loginnDto.password);
 
-            if (ldap == null)
-            {
-                return false;
-
-            }
-
-
-
-
-            return true;
-
-
-
+            return _ldapUsers.Any(x =>
+            x.Name == loginDto.Name &&
+            x.Password == loginDto.Password);
         }
-        public LdapUser GEtUser(LoginDto loginnDto)
+            //var ldap = _ldapUsers.FirstOrDefault(x => x.Name == loginnDto.username && x.Password == loginnDto.password);
+
+            //if (ldap == null)
+            //{
+            //    return false;
+
+            //}
+
+
+
+
+            //return true;
+
+
+
+        
+        public LdapUser GetUser(LoginDto loginDto)
         {
 
-           
-           
-                   LdapUser ldapUser= _ldapUsers.Where(x => x.Name == loginnDto.username && 
-                   x.Password == loginnDto.password).FirstOrDefault()!;
-           if(ldapUser == null)
-            {
-                throw new Exception();
-            }
-           else { return ldapUser; }
-            
+            var user = _ldapUsers.FirstOrDefault(x =>
+             x.Name == loginDto.Name &&
+             x.Password == loginDto.Password);
+
+            return user ?? throw new Exception("User not found");
+
+            //        LdapUser ldapUser= _ldapUsers.Where(x => x.Name == loginnDto.username && 
+            //        x.Password == loginnDto.password).FirstOrDefault()!;
+            //if(ldapUser == null)
+            // {
+            //     throw new Exception();
+            // }
+            //else { return ldapUser; }
+
 
         }
     }

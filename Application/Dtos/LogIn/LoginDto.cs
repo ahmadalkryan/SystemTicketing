@@ -12,10 +12,10 @@ namespace Application.Dtos.LogIn
     {
 
          
-        [Required(ErrorMessage="Required")]
-       public string username {  get; set; } // change to Name 
-        [Required(ErrorMessage = "Required")]
-        public  string password { get; set; } // Password
+      //  [Required(ErrorMessage="Required")]
+       public string Name {  get; set; } // change to Name 
+      //  [Required(ErrorMessage = "Required")]
+        public  string Password { get; set; } // Password
 
     }
 }

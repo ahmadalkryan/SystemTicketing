@@ -59,7 +59,7 @@ namespace Infrastructure
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<ITicketStatusService, TicketStatusService>();
             services.AddScoped<ITicketTraceService, TicketTraceService>();
-           // services.ِAddScoped<INotificationService, NotificationService>();
+            services.AddScoped<AuthServices>();
             services.AddScoped<ITicketNumberGenerator, TicketNumberGenerator>();
             services.AddScoped<Application.IService.IEmailService, EmailSender>();
             services.AddScoped<IDeviceCategoryService, DeviceCategoryService>();
@@ -69,7 +69,7 @@ namespace Infrastructure
             services.AddSignalR();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddMemoryCache();
-            services.AddScoped<AuthenticationService>();
+           
             services.AddScoped<ITokenService, TokenService>();
             // services.AddSignalR();
 

@@ -110,13 +110,19 @@ public class TicketNotificationFilter : IAsyncActionFilter
             .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == ticketTraceDto.TicketId);
 
-        if (originalTicket != null && originalTicket.TicketStatusId != ticketTraceDto.StatusID)
-        {
-            await _notificationService.SendNotification(
+        await _notificationService.SendNotification(
                 ticketTraceDto.UserId,
                 $" Ticket updated successfuly   #{originalTicket.TicketNumber}",
                 ticketTraceDto.Id
             );
-        }
+
+        //if (originalTicket != null && originalTicket.TicketStatusId != ticketTraceDto.StatusID)
+        //{
+        //    await _notificationService.SendNotification(
+        //        ticketTraceDto.UserId,
+        //        $" Ticket updated successfuly   #{originalTicket.TicketNumber}",
+        //        ticketTraceDto.Id
+        //    );
+        //}
     }
 }

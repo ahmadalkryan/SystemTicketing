@@ -24,11 +24,11 @@ namespace SystemTicketing.Controllers
     {
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
-        private readonly AutenticationServices _authenticationService;
+        private readonly AuthServices _authenticationService;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenSevice ;
         private readonly IJsonFieldsSerializer _jsonFieldsSerializer ;
-        public AuthController(IUserService userService , AutenticationServices authenticationService,IMapper mapper,
+        public AuthController(IUserService userService , AuthServices authenticationService,IMapper mapper,
             IJsonFieldsSerializer jsonFieldsSerializer, ITokenService tokenSevice, IRoleService roleService)
         {
             _authenticationService = authenticationService;
@@ -46,18 +46,12 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
-
-            //LdapUser user = AutenticationService._ldapUsers
-            //     .FirstOrDefault(x => x.Username == loginDto.username && x.Password == loginDto.password);
 
             var Isldap = _authenticationService.Authenticate(loginDto);
 
-
-
             if (!Isldap )
-            
             {
 
                 return Unauthorized(" Unauthorized user ");
@@ -65,12 +59,12 @@ namespace SystemTicketing.Controllers
             }
             
                 // get user from Ldap 
-                var ldapUser = _authenticationService.GEtUser(loginDto);
-            if(ldapUser == null){
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+                var ldapUser = _authenticationService.GetUser(loginDto);
+            //if(ldapUser == null){
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
+            //}
             // exists in Db 
-            var existuser = _userService.GetUserByEmail(ldapUser.
+            var existuser = await _userService.GetUserByEmail(ldapUser.
                     Email);
 
             if (existuser == null)
@@ -78,7 +72,7 @@ namespace SystemTicketing.Controllers
                
               await _userService.InsertUser(ldapUser);
                 
-               
+             
                
             }
             var user = await _userService.GetUserByEmail(ldapUser.Email);
@@ -91,7 +85,8 @@ namespace SystemTicketing.Controllers
                 Department = ldapUser.Department,
             };
             var token = _tokenSevice.GenerateToken(newUser);
-            var roledto =   await   _roleService.GetRoleByUserId(user.UserId);
+
+            var roledto =   await _roleService.GetRoleByUserId(user.UserId);
            
         var result =  new AuthResponseDto
             {
@@ -100,7 +95,7 @@ namespace SystemTicketing.Controllers
                 FullName = newUser.Name,
                 Email = newUser.Email,
                 Department = newUser.Department,
-                role=roledto.Name
+                role=roledto.Name?? "Employee"
             };
             return new RawJsonActionResult(_jsonFieldsSerializer.
                 Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
@@ -152,7 +147,7 @@ namespace SystemTicketing.Controllers
                 FullName=name ,
                 Email = email,
                 Department =department,
-                role = roleDto.Name,
+                role = roleDto.Name ?? "Employee"
             };
 
 
@@ -163,25 +158,6 @@ namespace SystemTicketing.Controllers
 
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

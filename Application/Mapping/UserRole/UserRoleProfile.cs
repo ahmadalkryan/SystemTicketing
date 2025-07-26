@@ -13,9 +13,9 @@ namespace Application.Mapping
     {
         public UserRoleProfile()
         {
-            CreateMap<UserRoleDto,UserRole>();
-            CreateMap<UserRole, CreateUserRole>();
-            CreateMap<UserRole, UpdateUserRole>();
+            CreateMap<UserRole,UserRoleDto>();
+            CreateMap<CreateUserRole, UserRole>();
+            CreateMap<UpdateUserRole,UserRole >();
         }
     }
 }

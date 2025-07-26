@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SystemTicketing.Controllers
@@ -121,7 +122,7 @@ namespace SystemTicketing.Controllers
 
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         [ProducesResponseType(typeof(ApiResponse<AuthResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
@@ -130,22 +131,42 @@ namespace SystemTicketing.Controllers
         public async Task<IActionResult> profile()
         {
 
-            var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-            var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
-            var name =User.FindFirst(JwtRegisteredClaimNames.Name)?.Value;
-            var department =User.FindFirst("department")?.Value;
+            //var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            //var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
+            //var name =User.FindFirst(JwtRegisteredClaimNames.Name)?.Value;
+            //var department =User.FindFirst("department")?.Value;
 
-            if (string.IsNullOrEmpty(userId))
+            //if (string.IsNullOrEmpty(userId))
+            //{
+            //    return Unauthorized(new ApiResponse(
+
+            //         false,
+            //"User ID not found in token",
+            //StatusCodes.Status401Unauthorized,
+            //null));
+            //}
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
             {
                 return Unauthorized(new ApiResponse(
-
-                     false,
-            "User ID not found in token",
-            StatusCodes.Status401Unauthorized,
-            null));
+                    false,
+                    "Token not found",
+                    StatusCodes.Status401Unauthorized,
+                    null));
             }
 
-            var userdto = await  _userService.GetUserById(userId);
+           
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+
+                var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+                var email = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
+                var name = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value;
+                var department = jwtToken.Claims.FirstOrDefault(c => c.Type == "department")?.Value;
+
+
+                var userdto = await  _userService.GetUserById(userId);
             if (userdto == null)
             {
                 return NotFound(new ApiResponse(
@@ -163,7 +184,7 @@ namespace SystemTicketing.Controllers
                 roleName = roles.FirstOrDefault()?.Name ?? "Employee";
             }
             var result = new AuthResponseDto
-            {
+            {     Token=token,
                 userId = userId,
                 FullName=name ,
                 Email = email,

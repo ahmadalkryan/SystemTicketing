@@ -92,7 +92,7 @@ namespace SystemTicketing
         services.AddCors(options => {
             options.AddPolicy("DevCors", policy => {
                 policy.WithOrigins(
-                        "https://localhost:52324", // React port
+                      "https://localhost:52324", // React port
                         "https://localhost:7220"   // API port
                     )
                     .AllowAnyHeader()
@@ -111,7 +111,7 @@ namespace SystemTicketing
 //options.Events = new JwtBearerEvents
 //{
 //    OnTokenValidated = async context =>
-//    {
+//    { "https://localhost:52324", // React port
 //        var token = context.SecurityToken?.RawData;
 //        var tokenBlacklistService = context.HttpContext.RequestServices
 //            .GetRequiredService<ITokenBlacklistService>();

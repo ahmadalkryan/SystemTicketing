@@ -82,8 +82,8 @@ namespace SystemTicketing
                             Name="Bearer",
                             In = ParameterLocation.Header
                         },
-                        new List<string>()  
-                   // Array.Empty<string>()
+                  //      new List<string>()  
+                Array.Empty<string>()
                     }
                 });
         });
@@ -99,6 +99,7 @@ namespace SystemTicketing
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyOrigin();
+              
             });
         });
 

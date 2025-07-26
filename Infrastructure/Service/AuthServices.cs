@@ -22,7 +22,7 @@ namespace Infrastructure.Service
         {
             new LdapUser
         {
-                UserID ="1",
+                UserID ="5",
             Name = "emp1",
             Password = "emp1@123",
          //FullName = "محمد أحمد",
@@ -32,7 +32,7 @@ namespace Infrastructure.Service
         },
             new LdapUser
         {
-                UserID ="2",
+                UserID ="6",
             Name = "emp3",
             Password = "emp1@123",
          //FullName = "محمد أحمد",
@@ -42,7 +42,7 @@ namespace Infrastructure.Service
         },
         new LdapUser
         {
-            UserID ="3",
+            UserID ="7",
             Name = "maint1",
             Password = "maint@456",
           //  FullName = "علي محمود",

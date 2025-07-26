@@ -144,38 +144,7 @@ namespace SystemTicketing
             });
         }
 
-        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataSeeder dataSeeder)
-        //{
-        //    if (env.IsDevelopment())
-        //    {
-        //        app.UseExceptionHandler("/Home/Error");
-        //        app.UseHsts();
-        //    }
-
-        //    dataSeeder.SeedData();
-
-        //    app.UseHttpsRedirection();
-        //    app.UseStaticFiles();
-        //    app.UseRouting();
-
-        //    app.UseCors("DevCors");
-
-        //    app.UseAuthentication();
-        //    app.UseAuthorization();
-
-        //    app.UseSwagger();
-        //    app.UseSwaggerUI(c =>
-        //    {
-        //        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My_API V1");
-        //    });
-
-        //    app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-        //    app.UseEndpoints(endpoints =>
-        //    {
-        //        endpoints.MapControllers();
-        //    });
-        //}
+       
     }
 
 

@@ -3,6 +3,7 @@ using Application.IRepository;
 using Application.IService;
 using AutoMapper;
 using Domain.Entities;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +15,15 @@ namespace Infrastructure.Service
     public class RoleService : IRoleService
     {
         private readonly  IAppRepository<Role> _appRepository;
-
+        private readonly IAppRepository<UserRole> _userRoleRepository;
         private readonly IMapper _mapper;
         private readonly IUserRoleService _userRoleService;
 
-        public RoleService(IAppRepository<Role > appRepository ,IMapper mapper ,IUserRoleService roleService)
+        public RoleService(IAppRepository<Role > appRepository ,IMapper mapper ,IAppRepository<UserRole> appRepository1)
         {
             _appRepository = appRepository;
             _mapper = mapper;
-            _userRoleService = roleService;
+            _userRoleRepository= appRepository1;
         }
 
 
@@ -54,21 +55,34 @@ namespace Infrastructure.Service
             return _mapper.Map<RoleDto>(r);
         }
 
-      public async Task<RoleDto> GetRoleByUserId(string userId)
+        // get all role ;
+      public async Task<IEnumerable<RoleDto>> GetRoleByUserId(string userId)
         {
-            var userRolesDto = await _userRoleService.GetAllUserRole();
+            //var userRolesDto = await _userRoleService.GetAllUserRole();
 
-             var userRoleDto = userRolesDto.FirstOrDefault(x=>x.UserId==userId);
+            // var userRoleDto = userRolesDto.FirstOrDefault(x=>x.UserId==userId);
 
-            var roleId = userRoleDto.RoleId;
-            var rolesDto = await GetAllRoles();
+            //var roleId = userRoleDto.RoleId ;
+            //var rolesDto = await GetAllRoles();
 
-            var role = rolesDto.FirstOrDefault(x => x.Id == roleId);
-            return role;
+            //var role = rolesDto.FirstOrDefault(x => x.Id == roleId);
+            //return role;
+            var userRoles = await _userRoleRepository.GetAllAsync();
+
+             var userroles = userRoles.Where(x=>x.UserId==userId).ToList();
+            IEnumerable<Role> result = new List<Role>();
+            foreach( var  usr in userroles)
+            {
+                result.Append(usr._role);
+            }
+
+            return _mapper.Map<IEnumerable<RoleDto>>(result);
+
+            
 
 
         }
 
-
+      
     }
 }

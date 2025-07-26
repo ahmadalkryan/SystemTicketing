@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.Action;
 using Application.Dtos.DeviceCategory;
 using Application.Dtos.LogIn;
+using Application.Dtos.UserRole;
 using Application.IService;
 using Application.LDAP;
 using Application.Serializer;
@@ -25,11 +26,12 @@ namespace SystemTicketing.Controllers
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly AuthServices _authenticationService;
+        private readonly IUserRoleService _userRoleService;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenSevice ;
         private readonly IJsonFieldsSerializer _jsonFieldsSerializer ;
         public AuthController(IUserService userService , AuthServices authenticationService,IMapper mapper,
-            IJsonFieldsSerializer jsonFieldsSerializer, ITokenService tokenSevice, IRoleService roleService)
+            IJsonFieldsSerializer jsonFieldsSerializer, ITokenService tokenSevice, IRoleService roleService ,IUserRoleService userRoleService)
         {
             _authenticationService = authenticationService;
             _mapper = mapper;
@@ -37,6 +39,7 @@ namespace SystemTicketing.Controllers
             _tokenSevice = tokenSevice;
             _jsonFieldsSerializer = jsonFieldsSerializer;
             _roleService = roleService;
+            _userRoleService = userRoleService;
         }
 
 
@@ -71,9 +74,15 @@ namespace SystemTicketing.Controllers
             {
                
               await _userService.InsertUser(ldapUser);
-                
-             
-               
+                CreateUserRole userRoleDto = new CreateUserRole()
+                {
+                    UserId = ldapUser.UserID,
+                    RoleId = "1"
+                };
+
+                var userrole = await _userRoleService.CreateUserRole(userRoleDto);
+
+
             }
             var user = await _userService.GetUserByEmail(ldapUser.Email);
             var newUser = new User
@@ -86,22 +95,32 @@ namespace SystemTicketing.Controllers
             };
             var token = _tokenSevice.GenerateToken(newUser);
 
-            var roledto =   await _roleService.GetRoleByUserId(user.UserId);
-           
-        var result =  new AuthResponseDto
+
+            var roles = await _roleService.GetRoleByUserId(user.UserId);
+            var roleName = "Employee"; // Default role
+
+            if (roles != null && roles.Any())
+            {
+                roleName = roles.FirstOrDefault()?.Name ?? "Employee";
+            }
+
+            var result =  new AuthResponseDto
             {
                 Token = token,
                 userId = newUser.UserId,
                 FullName = newUser.Name,
                 Email = newUser.Email,
                 Department = newUser.Department,
-                role=roledto.Name?? "Employee"
+                role= roleName?? "Employee"
             };
             return new RawJsonActionResult(_jsonFieldsSerializer.
                 Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
 
 
         }
+
+
+
 
 
         [HttpGet]
@@ -111,14 +130,13 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
 
-
         public async Task<IActionResult> profile()
         {
 
             var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
             var name =User.FindFirst(JwtRegisteredClaimNames.Name)?.Value;
-            var department =User.FindFirst("department ")?.Value;
+            var department =User.FindFirst("department")?.Value;
 
             if (string.IsNullOrEmpty(userId))
             {
@@ -130,7 +148,7 @@ namespace SystemTicketing.Controllers
             null));
             }
 
-               var userdto = await  _userService.GetUserById(userId);
+            var userdto = await  _userService.GetUserById(userId);
             if (userdto == null)
             {
                 return NotFound(new ApiResponse(
@@ -139,15 +157,21 @@ namespace SystemTicketing.Controllers
             StatusCodes.Status404NotFound,
             null));
             }
-            var roleDto = await _roleService.GetRoleByUserId(userId);
+            
+            var roles = await _roleService.GetRoleByUserId(userId);
+            var roleName = "Employee"; // Default role
 
+            if (roles != null && roles.Any())
+            {
+                roleName = roles.FirstOrDefault()?.Name ?? "Employee";
+            }
             var result = new AuthResponseDto
             {
                 userId = userId,
                 FullName=name ,
                 Email = email,
                 Department =department,
-                role = roleDto.Name ?? "Employee"
+                role = roleName ?? "Employee"
             };
 
 
@@ -157,50 +181,58 @@ namespace SystemTicketing.Controllers
 
 
 
+        
         }
 
 
 
 
         [HttpPost("logout")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Logout()
         {
-            
-           
-                // 1. الحصول على التوكن من رأس الطلب
-                var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
 
-                // 2. التحقق من وجود التوكن وصحته
-                if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
-                {
+            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            if (string.IsNullOrEmpty(token))
+                return BadRequest("Invalid token");
+            _tokenSevice.AddToBlackListToken(token);     
+            await HttpContext.SignOutAsync();
+            return Ok("Logged out successfully");
+
+            // 1. الحصول على التوكن من رأس الطلب
+            //var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            //    // 2. التحقق من وجود التوكن وصحته
+            //    if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+            //    {
                     
-                    return BadRequest(new ApiResponse(
-                        false,
-                        "Token is missing or invalid",
-                        StatusCodes.Status400BadRequest,
-                        null));
-                }
+            //        return BadRequest(new ApiResponse(
+            //            false,
+            //            "Token is missing or invalid",
+            //            StatusCodes.Status400BadRequest,
+            //            null));
+            //    }
 
-                // 3. استخراج التوكن من الرأس
-                var token = authHeader.Substring("Bearer ".Length).Trim();
+            //    // 3. استخراج التوكن من الرأس
+            //    var token = authHeader.Substring("Bearer ".Length).Trim();
 
-                // 4. إضافة التوكن إلى القائمة السوداء
-                 _tokenSevice.AddToBlackListToken(token);
+            //    // 4. إضافة التوكن إلى القائمة السوداء
+            //     _tokenSevice.AddToBlackListToken(token);
 
-                // 5. تسجيل الخروج من نظام المصادقة
-                await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+            //    // 5. تسجيل الخروج من نظام المصادقة
+            //    await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
 
-            // 6. إزالة ملفات تعريف الارتباط إذا كنت تستخدمها
-            //  Response.Cookies.Delete("access_token");
+            //// 6. إزالة ملفات تعريف الارتباط إذا كنت تستخدمها
+            ////  Response.Cookies.Delete("access_token");
 
-            //  _logger.LogInformation($"User with token: {token.Substring(0, 5)}... logged out successfully");
+            ////  _logger.LogInformation($"User with token: {token.Substring(0, 5)}... logged out successfully");
 
-            // 7. إرجاع النتيجة الناجحة
-            return Ok(new ApiResponse(true, "successful", StatusCodes.Status200OK, null));
+            //// 7. إرجاع النتيجة الناجحة
+            //return Ok(new ApiResponse(true, "successful", StatusCodes.Status200OK, null));
         }
             
            

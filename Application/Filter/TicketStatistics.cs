@@ -16,6 +16,9 @@ namespace Application.Filter
 
         public int refundTickets { get; set; }
 
+        public int NewTickets { get; set; }
+
+
 
     }
 }

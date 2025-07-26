@@ -69,41 +69,55 @@ namespace Infrastructure.Service
         {
             var query = await _repo.GetAllAsync();
 
-             if( filterTicket.TicketNumber != null)
+            
+
+            if (!string.IsNullOrEmpty(filterTicket.TicketNumber))
             {
-                query = query.Where(x=>x.TicketNumber == filterTicket.TicketNumber);
-            }
-             if(filterTicket.CreatedDate != null)
-            {
-                query = query.Where(x => x.CreatedDate == filterTicket.CreatedDate);
+                query = query.Where(x => x.TicketNumber == filterTicket.TicketNumber);
             }
 
-             if(filterTicket._status!= null)
+            if (filterTicket.CreatedDate.HasValue)
             {
-                query=query.Where(x=>x._status.StatusName==filterTicket._status);
+               
+                var startDate = filterTicket.CreatedDate.Value.Date;
+                var endDate = startDate.AddDays(1).AddTicks(-1);
+
+                query = query.Where(x => x.CreatedDate >= startDate && x.CreatedDate <= endDate);
+            }
+
+            if (filterTicket.DeciveCategoryId!=null)
+            {
+
+                query = query.Where(x => x.DeciveCategoryId == filterTicket.DeciveCategoryId);
+                  
             }
             return _mapper.Map<IEnumerable<TicketDto>>(query);
         }
 
         public async Task<TicketStatistics> TicketStatistic()
         {
-            var t = await _repo.GetAllAsync();
-
-            TicketStatusEnum Tcomplete = TicketStatusEnum.Complete;
-            TicketStatusEnum Tpendng= TicketStatusEnum.Pending;
-            TicketStatusEnum Trefund = TicketStatusEnum.Refund;
+            var tickets = await _repo.GetAllAsync();
+            
 
 
             TicketStatistics ticketStatistics = new TicketStatistics()
             {
+                TotalTickets = tickets.Count(),
+                CompleteTickets = tickets.Count(x => x.TicketStatusId == 4),
 
-                TotalTickets = t.Count(),
-                CompleteTickets = t.Where(x=>x._status?.StatusName.ToString()==Tcomplete.ToString()).Count(),
-                PendingTickets = t.Where(t => t._status?.StatusName.ToString() == Tpendng.ToString()).Count(),
-                refundTickets = t.Where(t =>t._status.StatusName.ToString().Equals(Trefund.ToString())).Count()
+
+
+                PendingTickets = tickets.Count(x =>x.TicketStatusId == 1),
+                    
+
+                refundTickets = tickets.Count(x =>x.TicketStatusId==3),
+
+                NewTickets = tickets.Count(x=>x.TicketStatusId==2), 
+                   
+
+
             };
-
-            
+        
 
              return ticketStatistics;
 
@@ -113,7 +127,7 @@ namespace Infrastructure.Service
         {
             var query = await _repo.GetAllAsync();
 
-            if(filterDate.startDate!= null&& filterDate.endDate !=null)
+            if(filterDate.startDate!= default && filterDate.endDate !=default)
             {
                 query = query.Where(x=>x.CreatedDate>=filterDate.startDate&& x.CreatedDate<=filterDate.endDate);
             }
@@ -125,7 +139,7 @@ namespace Infrastructure.Service
         {
            var tickets = await _repo.GetAllAsync();
 
-            var t = tickets.Where(x=> x.TicketNumber==TicketNumber); ;
+            var t = tickets.Where(x => x.TicketNumber == TicketNumber).FirstOrDefault();
 
             return _mapper.Map<TicketDto>(t);
 

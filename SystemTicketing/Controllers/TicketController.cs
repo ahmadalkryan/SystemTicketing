@@ -102,7 +102,7 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<List<TicketDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> FilterTicket([FromQuery] FilterTicket filterTicket)
+        public async Task<IActionResult> FilterTicket([FromBody] FilterTicket filterTicket)
         {
             var result =await _ticketService.FilterTicket(filterTicket);
 

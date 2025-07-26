@@ -14,8 +14,7 @@ namespace SystemTicketing
             services.AddScoped<TicketNotificationFilter>();
 
 
-           //// أو كـ Scoped إذا كان يعتمد على خدمات أخرى
-           //services.AddScoped<ExceptionHandlingMiddleware>();
+          
 
             services.AddEndpointsApiExplorer();
 
@@ -98,8 +97,8 @@ namespace SystemTicketing
                     )
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowAnyOrigin();
-              
+                   .AllowCredentials();
+
             });
         });
 

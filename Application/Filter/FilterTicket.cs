@@ -14,6 +14,6 @@ namespace Application.Filter
 
         public DateTime? CreatedDate { get; set; }
 
-        public TicketStatusEnum? _status { get; set; }
+        public int? DeciveCategoryId { get; set; }
     }
 }

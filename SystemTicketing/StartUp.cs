@@ -122,6 +122,12 @@ namespace SystemTicketing
 
             // 4. CORS قبل المصادقة
             app.UseCors("DevCors");
+            app.Use(async (context, next) =>
+            {
+                var token = context.Request.Headers["Authorization"].FirstOrDefault();
+                Console.WriteLine($"Received Token: {token}");
+                await next();
+            });
 
             // 5. المصادقة والتفويض
             app.UseAuthentication();

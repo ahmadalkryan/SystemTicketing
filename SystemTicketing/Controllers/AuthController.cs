@@ -63,10 +63,7 @@ namespace SystemTicketing.Controllers
             
                 // get user from Ldap 
                 var ldapUser = _authenticationService.GetUser(loginDto);
-            //if(ldapUser == null){
-            //    return StatusCode(StatusCodes.Status500InternalServerError);
-            //}
-            // exists in Db 
+            
             var existuser = await _userService.GetUserByEmail(ldapUser.
                     Email);
 

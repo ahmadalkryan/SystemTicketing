@@ -131,20 +131,6 @@ namespace SystemTicketing.Controllers
         public async Task<IActionResult> profile()
         {
 
-            //var userId = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-            //var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
-            //var name =User.FindFirst(JwtRegisteredClaimNames.Name)?.Value;
-            //var department =User.FindFirst("department")?.Value;
-
-            //if (string.IsNullOrEmpty(userId))
-            //{
-            //    return Unauthorized(new ApiResponse(
-
-            //         false,
-            //"User ID not found in token",
-            //StatusCodes.Status401Unauthorized,
-            //null));
-            //}
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
             if (string.IsNullOrEmpty(token))
@@ -207,51 +193,32 @@ namespace SystemTicketing.Controllers
 
         [HttpPost("logout")]
         [Authorize]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        //[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status500InternalServerError)]
+      //  [ProducesResponseType(typeof(ApiResponse<AuthResponseDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Logout()
         {
 
             var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
             if (string.IsNullOrEmpty(token))
-                return BadRequest("Invalid token");
-            _tokenSevice.AddToBlackListToken(token);     
-            await HttpContext.SignOutAsync();
-            return Ok("Logged out successfully");
+            {
+                return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(
+                    false,
+                    "Token is missing or invalid",
+                    StatusCodes.Status400BadRequest,
+                    null), string.Empty));
+            }
 
-            // 1. الحصول على التوكن من رأس الطلب
-            //var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+            // إضافة التوكن إلى القائمة السوداء
+            _tokenSevice.AddToBlackListToken(token);
 
-            //    // 2. التحقق من وجود التوكن وصحته
-            //    if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
-            //    {
-                    
-            //        return BadRequest(new ApiResponse(
-            //            false,
-            //            "Token is missing or invalid",
-            //            StatusCodes.Status400BadRequest,
-            //            null));
-            //    }
+            // لا تستخدم SignOutAsync مع JWT
+            return new RawJsonActionResult( _jsonFieldsSerializer.Serialize( new ApiResponse(
+                true,
+                "Logged out successfully",
+                StatusCodes.Status200OK,
+                null),string.Empty));
 
-            //    // 3. استخراج التوكن من الرأس
-            //    var token = authHeader.Substring("Bearer ".Length).Trim();
-
-            //    // 4. إضافة التوكن إلى القائمة السوداء
-            //     _tokenSevice.AddToBlackListToken(token);
-
-            //    // 5. تسجيل الخروج من نظام المصادقة
-            //    await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
-
-            //// 6. إزالة ملفات تعريف الارتباط إذا كنت تستخدمها
-            ////  Response.Cookies.Delete("access_token");
-
-            ////  _logger.LogInformation($"User with token: {token.Substring(0, 5)}... logged out successfully");
-
-            //// 7. إرجاع النتيجة الناجحة
-            //return Ok(new ApiResponse(true, "successful", StatusCodes.Status200OK, null));
-        }
+            }
             
            
         }

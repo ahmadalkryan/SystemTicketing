@@ -18,7 +18,7 @@ namespace Domain.Entities
         public string Description { get; set; }
 
         public string AttachmentPath {  get; set; }
-
+        // deviceId 
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
 

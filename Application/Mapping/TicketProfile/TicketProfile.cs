@@ -19,7 +19,8 @@ namespace Application.Mapping.TicketProfile
             CreateMap<Ticket, TicketDto>();
 
             CreateMap<CreateTicketDto, Ticket>().ForMember(
-                dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.UtcNow))
+                dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.UtcNow)).
+                ForMember(dest => dest.TicketStatusId, opt => opt.MapFrom(src => 2))
            .ForMember(
                 des => des.TicketNumber, src => src.MapFrom<TicketNumberResolver>());
             CreateMap<updateTicketDto, Ticket>().ForMember(des => des.UpdatedDate, src => src.MapFrom(opt => DateTime.UtcNow));

@@ -9,7 +9,7 @@ namespace Application.Dtos.Ticket
     public class CreateTicketDto
     {
 
-        //public string TicketNumber { get; set; }
+        
         public string Description { get; set; }
 
         public string AttachmentPath { get; set; }
@@ -21,3 +21,4 @@ namespace Application.Dtos.Ticket
 
     }
 }
+//public string TicketNumber { get; set; }

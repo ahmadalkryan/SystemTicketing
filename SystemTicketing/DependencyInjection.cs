@@ -92,7 +92,8 @@ namespace SystemTicketing
         services.AddCors(options => {
             options.AddPolicy("DevCors", policy => {
                 policy.WithOrigins(
-                      "https://localhost:52324", // React port
+                   
+                      "http://localhost:57370", // React Port
                         "https://localhost:7220"   // API port
                     )
                     .AllowAnyHeader()

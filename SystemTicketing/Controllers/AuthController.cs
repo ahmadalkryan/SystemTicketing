@@ -75,7 +75,7 @@ namespace SystemTicketing.Controllers
                 CreateUserRole userRoleDto = new CreateUserRole()
                 {
                     UserId = ldapUser.UserID,
-                    RoleId = "3"
+                    RoleId = "1"
                 };
 
                 var userrole = await _userRoleService.CreateUserRole(userRoleDto);
@@ -95,11 +95,11 @@ namespace SystemTicketing.Controllers
 
 
             var roles = await _roleService.GetRoleByUserId(user.UserId);
-            var roleName = "Admin"; // Default role
+            var roleName = "Employee"; // Default role
 
             if (roles != null && roles.Any())
             {
-                roleName = roles.FirstOrDefault()?.Name ?? "Admin";
+                roleName = roles.FirstOrDefault()?.Name ?? "Employee";
             }
 
             var result =  new AuthResponseDto

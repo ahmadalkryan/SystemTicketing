@@ -16,11 +16,12 @@ namespace SystemTicketing.Controllers
     {  
          private readonly ITicketService _ticketService;
          private readonly IJsonFieldsSerializer _jsonFieldsSerializer;
-
-        public TicketController( ITicketService ticketService ,IJsonFieldsSerializer jsonFieldsSerializer )
+        private readonly IWebHostEnvironment _webHostEnvironment;  
+        public TicketController( ITicketService ticketService ,IJsonFieldsSerializer jsonFieldsSerializer,IWebHostEnvironment webHostEnvironment )
         {
              _jsonFieldsSerializer = jsonFieldsSerializer;
             _ticketService = ticketService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -68,11 +69,40 @@ namespace SystemTicketing.Controllers
         [ProducesResponseType(typeof(ApiResponse<TicketDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
        [ServiceFilter(typeof(TicketNotificationFilter))]
-        public async Task<IActionResult > InsertTicket([FromBody] CreateTicketDto dto)
+        public async Task<IActionResult > InsertTicket([FromForm] CreateTicketDto dto)
         {
-            var result = await _ticketService.CreateTicket(dto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            if (dto.ImageFile != null)
+            {
+                string wwwRootPAth = _webHostEnvironment.WebRootPath;
+                string fileName =Guid.NewGuid().ToString() + Path.GetExtension(dto.ImageFile.FileName);
+                string directoryPath = Path.Combine(wwwRootPAth, "images", "devices");
+
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                string filePath = Path.Combine(directoryPath ,fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.ImageFile.CopyToAsync(fileStream);
+                }
+              //  dto.AttachmentPath= "/images/devices" + fileName;
+
+               
+
+            }
+
+
+            var result = await _ticketService.CreateTicket(dto);
+            if(result ==null)
+            {
+                return new RawJsonActionResult(
+                    _jsonFieldsSerializer.Serialize(
+                        new ApiResponse(false, "failed create", StatusCodes.Status400BadRequest),
+                        string.Empty));
+            }
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "Ticket Created successfully", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpDelete]
@@ -81,6 +111,9 @@ namespace SystemTicketing.Controllers
 
         public async Task<IActionResult> DeleteTicket(BaseDto<int> dto)
         {
+
+
+
             var result = await _ticketService.DeleteTicket(dto);
 
             return new RawJsonActionResult

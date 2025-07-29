@@ -21,6 +21,14 @@ namespace Application.Mapping.TicketProfile
             CreateMap<CreateTicketDto, Ticket>().ForMember(
                 dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.UtcNow)).
                 ForMember(dest => dest.TicketStatusId, opt => opt.MapFrom(src => 2))
+                .ForMember(dest => dest.AttachmentPath, opt => opt.Ignore()) // تجاهل في البداية
+            .AfterMap((src, dest) => {
+                if (src.ImageFile != null)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(src.ImageFile.FileName);
+                    dest.AttachmentPath = "/images/devices/" + fileName; // تعيين المسار هنا
+                }
+            })
            .ForMember(
                 des => des.TicketNumber, src => src.MapFrom<TicketNumberResolver>());
             CreateMap<updateTicketDto, Ticket>().ForMember(des => des.UpdatedDate, src => src.MapFrom(opt => DateTime.UtcNow));

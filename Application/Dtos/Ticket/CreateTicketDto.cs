@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,12 @@ namespace Application.Dtos.Ticket
         
         public string Description { get; set; }
 
-        public string AttachmentPath { get; set; }
+     //   public string AttachmentPath { get; set; }
 
         public int DeciveCategoryId { get; set; }
+
+
+        public IFormFile? ImageFile { get; set; }
         
 
 

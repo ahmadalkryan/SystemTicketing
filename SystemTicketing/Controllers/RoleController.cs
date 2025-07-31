@@ -36,8 +36,20 @@ namespace SystemTicketing.Controllers
 
             return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
         }
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<List<RoleDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
 
-       
+        public async Task<IActionResult> GetRoleByUserUd(string userId)
+        {
+            var result = await _roleService.GetRoleByUserId(userId);
+
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+        }
+
+
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status200OK)]

@@ -51,7 +51,7 @@ namespace Infrastructure.Context
                 t.Property(t => t.UpdatedDate).HasColumnName("updateDate")
                 .HasColumnType("datetime2(7)");
                 t.Property(t => t.AttachmentPath).HasColumnType("nvarchar(100)").
-                HasColumnName("AttachementPath").IsRequired();
+                HasColumnName("AttachementPath");
                 t.Property(t => t.Description).HasColumnName("Description")
                 .HasColumnType("nvarchar(100)").IsRequired();
 

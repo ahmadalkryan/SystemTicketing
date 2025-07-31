@@ -116,13 +116,5 @@ public class TicketNotificationFilter : IAsyncActionFilter
                 ticketTraceDto.Id
             );
 
-        //if (originalTicket != null && originalTicket.TicketStatusId != ticketTraceDto.StatusID)
-        //{
-        //    await _notificationService.SendNotification(
-        //        ticketTraceDto.UserId,
-        //        $" Ticket updated successfuly   #{originalTicket.TicketNumber}",
-        //        ticketTraceDto.Id
-        //    );
-        //}
     }
 }

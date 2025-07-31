@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.common;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,16 @@ namespace Application.Dtos.Ticket
     public class updateTicketDto:BaseDto<int>
     {
       
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public string AttachmentPath { get; set; }
-        public int TicketStatusId { get; set; }
+        public IFormFile? ImageFile { get; set; }
+        public int ?TicketStatusId { get; set; }
 
-        public int DeciveCategoryId { get; set; }
-      //  public DateTime CreatedDate { get; set; }
-       // public DateTime UpdatedDate { get; set; }
+        public int ?DeciveCategoryId { get; set; }
+    
 
 
     }
-}
+
+    // public string AttachmentPath { get; set; }
+    }

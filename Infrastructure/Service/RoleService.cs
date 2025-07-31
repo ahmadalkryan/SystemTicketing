@@ -58,31 +58,25 @@ namespace Infrastructure.Service
         // get all role ;
       public async Task<IEnumerable<RoleDto>> GetRoleByUserId(string userId)
         {
-            //var userRolesDto = await _userRoleService.GetAllUserRole();
 
-            // var userRoleDto = userRolesDto.FirstOrDefault(x=>x.UserId==userId);
+            var userRoles = (await _userRoleRepository.GetAllAsync())
+        .Where(x => x.UserId == userId)
+        .ToList();
 
-            //var roleId = userRoleDto.RoleId ;
-            //var rolesDto = await GetAllRoles();
-
-            //var role = rolesDto.FirstOrDefault(x => x.Id == roleId);
-            //return role;
-            var userRoles = await _userRoleRepository.GetAllAsync();
-
-             var userroles = userRoles.Where(x=>x.UserId==userId).ToList();
-            IEnumerable<Role> result = new List<Role>();
-            foreach( var  usr in userroles)
+            var roleTasks = userRoles.Select(async ur =>
             {
-                result.Append(usr._role);
-            }
+                var role = await GetRoleById(ur.RoleId);
+                return _mapper.Map<RoleDto>(role);
+            });
 
-            return _mapper.Map<IEnumerable<RoleDto>>(result);
+            return await Task.WhenAll(roleTasks);
 
             
-
-
         }
 
-      
+        public async Task<RoleDto> GetRoleById(string roleId)
+        {
+            return _mapper.Map<RoleDto>(await _appRepository.GetById(roleId));
+        }
     }
 }

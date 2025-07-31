@@ -11,8 +11,6 @@ namespace Application.Dtos.TicketTraceDto
         public string Note { get; set; }
 
        
-        
-
         public int TicketId { get; set; }
 
 

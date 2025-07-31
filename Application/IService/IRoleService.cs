@@ -13,7 +13,7 @@ namespace Application.IService
         Task<RoleDto> UpdateRole(UpdateRoleDto updateRoleDto);
 
         Task<RoleDto> DeleteRole(string roleId);
-
+        Task<RoleDto> GetRoleById(string roleId);
         Task<IEnumerable<RoleDto>> GetAllRoles();
         Task<IEnumerable<RoleDto>>GetRoleByUserId(string userId);
     }

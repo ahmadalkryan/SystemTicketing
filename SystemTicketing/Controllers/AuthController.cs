@@ -109,7 +109,7 @@ namespace SystemTicketing.Controllers
                 FullName = newUser.Name,
                 Email = newUser.Email,
                 Department = newUser.Department,
-                role= roleName?? "Employee"
+                role= roleName
             };
             return new RawJsonActionResult(_jsonFieldsSerializer.
                 Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));

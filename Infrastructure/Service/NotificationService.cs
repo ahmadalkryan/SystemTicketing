@@ -11,6 +11,7 @@ using NETCore.MailKit.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -117,7 +118,10 @@ namespace Infrastructure.Service
                 {
                     string emailSubject = " NEW Notification  " + message;
 
-                   await _emailService.SendEmailAsync(userEmail, emailSubject,message);
+                   
+                
+                        await _emailService.SendEmailAsync(userEmail, emailSubject, message);
+                   
                 }
             }
             catch (Exception ex)

@@ -13,7 +13,7 @@ namespace Application.Dtos.Ticket
         
         public string Description { get; set; }
 
-     //   public string AttachmentPath { get; set; }
+     
 
         public int DeciveCategoryId { get; set; }
 
@@ -28,3 +28,4 @@ namespace Application.Dtos.Ticket
 
 //public int TicketStatusId { get; set; }
 //public string TicketNumber { get; set; }
+//   public string AttachmentPath { get; set; }

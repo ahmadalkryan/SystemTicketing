@@ -27,9 +27,10 @@ namespace Infrastructure.Service
         }
         public async Task<TicketDto> CreateTicket(CreateTicketDto createTicketDto)
         {
-            await _repo.Insertasync(_mapper.Map<Ticket>(createTicketDto));
-
             var t = _mapper.Map<Ticket>(createTicketDto);
+            await _repo.Insertasync(t);
+
+           
             return _mapper.Map<TicketDto>(t);
 
 

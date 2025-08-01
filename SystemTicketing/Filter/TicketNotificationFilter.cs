@@ -113,7 +113,7 @@ public class TicketNotificationFilter : IAsyncActionFilter
         await _notificationService.SendNotification(
                 ticketTraceDto.UserId,
                 $" Ticket updated successfuly   #{originalTicket.TicketNumber}",
-                ticketTraceDto.Id
+                ticketTraceDto.TicketId
             );
 
     }

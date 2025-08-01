@@ -34,7 +34,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _roleService.GetAllRoles();
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<List<RoleDto>>), StatusCodes.Status200OK)]
@@ -46,7 +46,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _roleService.GetRoleByUserId(userId);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
 
@@ -58,7 +58,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _roleService.CreateRole(createRoleDto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
 
@@ -72,7 +72,7 @@ namespace SystemTicketing.Controllers
                 
 
             return new RawJsonActionResult
-                (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+                (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpPut]
@@ -83,7 +83,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _roleService.UpdateRole(updateRoleDto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
 

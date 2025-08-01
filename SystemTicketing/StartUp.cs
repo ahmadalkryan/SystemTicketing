@@ -99,7 +99,7 @@ namespace SystemTicketing
             .AddInfrastructure(Configuration)
             .AddPresentation(Configuration);
     }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataSeeder dataSeeder)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataSeeder dataSeeder )
         {
             // 1. بذر البيانات أولاً
             dataSeeder.SeedData();
@@ -119,9 +119,10 @@ namespace SystemTicketing
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
+           
             // 4. CORS قبل المصادقة
             app.UseCors("DevCors");
+         
             app.Use(async (context, next) =>
             {
                 var token = context.Request.Headers["Authorization"].FirstOrDefault();
@@ -147,6 +148,7 @@ namespace SystemTicketing
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotificationHub>("/notificationHub");
             });
         }
 

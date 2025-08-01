@@ -34,7 +34,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _userService.GetAllUsers();
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
 
@@ -46,7 +46,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _userService.InsertUser(ldapUser);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
 

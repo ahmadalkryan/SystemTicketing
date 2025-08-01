@@ -37,7 +37,7 @@ namespace SystemTicketing.Controllers
             var result = await _notificationService.GetAllNotifications();
 
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpGet]
@@ -47,7 +47,7 @@ namespace SystemTicketing.Controllers
         public async Task<IActionResult> GetNotifucatinById([FromQuery]BaseDto<int> dto)
         {
             var result = await _notificationService.GetNotificationByID(dto);
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
 
@@ -58,7 +58,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _notificationService.CreateNotification(createNotificationDto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpDelete]
@@ -70,7 +70,7 @@ namespace SystemTicketing.Controllers
             var result = await _notificationService.DeleteNotifiaction(dto);
 
             return new RawJsonActionResult
-                (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+                (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpPut]
@@ -81,7 +81,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _notificationService.UpdateNotification(updateNotificationDto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
 
@@ -93,7 +93,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _notificationService.IsReadNotification(id);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
 

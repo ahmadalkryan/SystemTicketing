@@ -22,20 +22,21 @@ namespace Infrastructure.Service
         private readonly IAppRepository<Notification> _appRepository;
         private readonly IAppRepository<User> _userRepository;
         private readonly IMapper _mapper;
-       // private readonly IHubContext<NotificationHub> _hubContext;
-        private readonly Application.IService.IEmailService _emailService;
+        private readonly IHubContext<NotificationHub> _hubContext;
+      //  private readonly Application.IService.IEmailService _emailService;
         private readonly ILogger<Notification> _logger;
-        //private readonly AppDbContext _app;
+       
 
-        public NotificationService(IAppRepository<Notification> _rep ,IMapper _map ,
-            Application.IService.IEmailService emailService ,ILogger<Notification> logger,IAppRepository<User> appRepository ) 
+        public NotificationService(IAppRepository<Notification> _rep , IMapper _map,
+             ILogger<Notification> logger, IAppRepository<User> appRepository, IHubContext<NotificationHub> hubContext)
         {
-             _appRepository = _rep ;
-            _mapper = _map ;
-         ///   _hubContext = hubContext ;
-            _emailService = emailService ;
-            _logger = logger ;
-           _userRepository = appRepository ;
+            _appRepository = _rep;
+            _mapper = _map;
+           
+            //_emailService = emailService;
+            _logger = logger;
+            _userRepository = appRepository;
+            _hubContext = hubContext;
         }
 
 
@@ -85,71 +86,89 @@ namespace Infrastructure.Service
             return N.IsRead ? true : false;
         }
 
-       public async  Task<NotificationDto> SendNotification(string userID, string message, int ticketId)
+       
+        public async Task<NotificationDto> SendNotification(string userID, string message, int ticketId)
         {
-            CreateNotificationDto notificationDto = new CreateNotificationDto { UserID = userID, Message = message, TicketId = ticketId 
-            ,IsRead=false,SentAt=DateTime.UtcNow
-
-            
-            };
-            var n = _mapper.Map<Notification>(notificationDto);
-            await CreateNotification(notificationDto);
-
-            var NotDto = _mapper.Map<NotificationDto>(n);
-
-            ////send Notification by SignalR
-            //     await _hubContext.Clients
-            //                  .User(userID)          // send to specific user 
-            //                            .SendAsync("ReceiveNotification", NotDto);
-
-            // send Email 
             try
             {
-                // get Email For USER  ***************************
-                //*********************
-                //  Users.FirstOrDefault(x => x.UserId == userID);
-                var users = _userRepository.GetAllAsync();
-                 var user= users.Result.FirstOrDefault(x => x.UserId == userID);
-
-                //  string userEmail = await _userService.GetUserEmailById(userID);
-
-                string userEmail = user.Email;
-                if (!string.IsNullOrEmpty(userEmail))
+                // إنشاء الإشعار
+                var notificationDto = new CreateNotificationDto
                 {
-                    string emailSubject = " NEW Notification  " + message;
+                    UserID = userID,
+                    Message = message,
+                    TicketId = ticketId,
+                    IsRead = false,
+                    SentAt = DateTime.UtcNow
+                };
 
-                   
-                
-                        await _emailService.SendEmailAsync(userEmail, emailSubject, message);
-                   
-                }
+                var notification = _mapper.Map<Notification>(notificationDto);
+                await CreateNotification(notificationDto);
+
+                var notificationToSend = _mapper.Map<NotificationDto>(notification);
+
+                // إرسال الإشعار عبر SignalR
+
+                //await _hubContext.Clients
+                //    .User(userID)
+                //    .SendAsync("ReceiveNotification", notificationToSend);
+
+
+                // تحديث حالة الإشعار بعد الإرسال
+                var updateNotification = new UpdateNotificationDto
+                {
+                    Id = notification.Id,
+                    IsRead = true
+                };
+
+                await UpdateNotification(updateNotification);
+
+                return notificationToSend;
             }
             catch (Exception ex)
             {
-                // سجل الخطأ (logging) ولكن لا توقف التطبيق
-                _logger.LogError(ex, "Failed to send email notification");
+                // تسجيل الخطأ
+                _logger.LogError(ex, "Error sending notification to user {UserId}", userID);
+                throw;
             }
-
-
-
-            UpdateNotificationDto updatnotification = new UpdateNotificationDto
-            {
-                Id=n.Id,
-
-                IsRead = true,
-            };
-
-            await UpdateNotification(updatnotification);
-
-
-
-
-
-            return NotDto ;
-
-
         }
 
-        
+
+
+
+
+
+
+
+
+
+        // send Email 
+        //try
+        //{
+        //    // get Email For USER  ***************************
+
+        //    var users = _userRepository.GetAllAsync();
+        //     var user= users.Result.FirstOrDefault(x => x.UserId == userID);
+
+
+
+        //    string userEmail = user.Email;
+        //    if (!string.IsNullOrEmpty(userEmail))
+        //    {
+        //        string emailSubject = " NEW Notification  " + message;
+
+
+
+        //            await _emailService.SendEmailAsync(userEmail, emailSubject, message);
+
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    // سجل الخطأ (logging) ولكن لا توقف التطبيق
+        //    _logger.LogError(ex, "Failed to send email notification");
+        //}
+
+
+
     }
 }

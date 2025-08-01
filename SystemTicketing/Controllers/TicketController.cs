@@ -34,7 +34,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketService.GetAllTickets();
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK,result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK,result), string.Empty));
         }
 
 
@@ -47,7 +47,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketService.GetTicketByID(dto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true ,"", StatusCodes.Status200OK ,result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true ,"successfuly", StatusCodes.Status200OK ,result), string.Empty));
 
         }
 
@@ -61,7 +61,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketService.GetTicketByNumber(number);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
 
@@ -117,7 +117,7 @@ namespace SystemTicketing.Controllers
             var result = await _ticketService.DeleteTicket(dto);
 
             return new RawJsonActionResult
-                (_jsonFieldsSerializer.Serialize(new ApiResponse(true , "" ,StatusCodes.Status200OK, result),string.Empty));
+                (_jsonFieldsSerializer.Serialize(new ApiResponse(true , "successfuly" ,StatusCodes.Status200OK, result),string.Empty));
         }
 
         [HttpPut]
@@ -128,7 +128,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketService.UpdateTicket(updateTicketDto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
         [HttpPost]
@@ -140,7 +140,7 @@ namespace SystemTicketing.Controllers
             var result =await _ticketService.FilterTicket(filterTicket);
 
             return new RawJsonActionResult
-               (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+               (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
 
@@ -153,7 +153,7 @@ namespace SystemTicketing.Controllers
             var result = await _ticketService.TicketStatistic();
 
             return new RawJsonActionResult
-               (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+               (_jsonFieldsSerializer.Serialize(new ApiResponse(true,   "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpGet]
@@ -164,7 +164,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketService.FilterTicketByDate(filterDate);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
 

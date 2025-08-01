@@ -34,7 +34,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketStausService.GetAllTicketStatus();
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpGet]
@@ -47,7 +47,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketStausService.GetTicketByID(dto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
 
@@ -58,7 +58,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketStausService.CreateTicketStatus(createTicketStatusDto);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
 
@@ -72,7 +72,7 @@ namespace SystemTicketing.Controllers
                 .DeleteTicketStatus(dto);
 
             return new RawJsonActionResult
-                (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+                (_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
         }
 
         [HttpPut]
@@ -83,7 +83,7 @@ namespace SystemTicketing.Controllers
         {
             var result = await _ticketStausService .UpdateTicketStatus(updateTicketStatusDto);  
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "", StatusCodes.Status200OK, result), string.Empty));
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
         }
 

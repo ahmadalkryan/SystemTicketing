@@ -61,7 +61,7 @@ namespace Infrastructure
             services.AddScoped<ITicketTraceService, TicketTraceService>();
             services.AddScoped<AuthServices>();
             services.AddScoped<ITicketNumberGenerator, TicketNumberGenerator>();
-            services.AddScoped<Application.IService.IEmailService, EmailSender>();
+        //    services.AddScoped<Application.IService.IEmailService, EmailSender>();
             services.AddScoped<IDeviceCategoryService, DeviceCategoryService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserRoleService, UserRoleService>();
@@ -71,9 +71,9 @@ namespace Infrastructure
             services.AddMemoryCache();
            
             services.AddScoped<ITokenService, TokenService>();
-            // services.AddSignalR();
+ 
 
-           // services.AddSignalR();
+           
 
             
             return services;

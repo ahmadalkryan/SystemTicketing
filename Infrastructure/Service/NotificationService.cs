@@ -78,7 +78,7 @@ namespace Infrastructure.Service
             return _mapper.Map<NotificationDto>(n);
         }
 
-         public async Task<bool> IsReadNotification(int id)
+         public async Task<bool> IReadNotification(int id)
         {
             BaseDto<int> b = new BaseDto<int> { Id = id };
             var N = await GetNotificationByID(b);
@@ -108,17 +108,17 @@ namespace Infrastructure.Service
 
                 // إرسال الإشعار عبر SignalR
 
-                //await _hubContext.Clients
-                //    .User(userID)
-                //    .SendAsync("ReceiveNotification", notificationToSend);
+                await _hubContext.Clients
+                    .User(userID)
+                    .SendAsync("ReceiveNotification", notificationToSend);
 
 
-                // تحديث حالة الإشعار بعد الإرسال
-                var updateNotification = new UpdateNotificationDto
-                {
-                    Id = notification.Id,
-                    IsRead = true
-                };
+               // تحديث حالة الإشعار بعد الإرسال
+               var updateNotification = new UpdateNotificationDto
+               {
+                   Id = notification.Id,
+                   IsRead = true
+               };
 
                 await UpdateNotification(updateNotification);
 
@@ -130,6 +130,14 @@ namespace Infrastructure.Service
                 _logger.LogError(ex, "Error sending notification to user {UserId}", userID);
                 throw;
             }
+        }
+
+            public async Task<IEnumerable<NotificationDto>> GetNotificationByUserId(string userId)
+        {
+               var  noti = (await _appRepository.GetAllAsync()).Where(x=>x.UserID==userId).ToList();
+
+            return _mapper.Map<IEnumerable<NotificationDto>>(noti);
+
         }
 
 

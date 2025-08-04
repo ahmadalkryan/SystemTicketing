@@ -14,6 +14,7 @@ namespace Application.IService
 
         Task<IEnumerable<NotificationDto>> GetAllNotifications();
         Task<NotificationDto> GetNotificationByID(BaseDto<int> dto);
+        Task<IEnumerable<NotificationDto>> GetNotificationByUserId(string userId);   
 
         Task<NotificationDto> SendNotification(string userID, string message, int ticketId);
 
@@ -22,6 +23,6 @@ namespace Application.IService
         Task<NotificationDto> UpdateNotification(UpdateNotificationDto updateNotificationDto );
 
         Task<NotificationDto> DeleteNotifiaction(BaseDto<int> dto);
-        Task<bool> IsReadNotification(int id);
+        Task<bool> IReadNotification(int id);
     }
 }

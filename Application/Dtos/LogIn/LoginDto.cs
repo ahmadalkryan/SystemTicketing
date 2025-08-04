@@ -17,5 +17,7 @@ namespace Application.Dtos.LogIn
       
         public  string Password { get; set; } // Password
 
+       // public string Department { get; set; }
+
     }
 }

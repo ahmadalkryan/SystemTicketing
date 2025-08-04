@@ -13,7 +13,7 @@ namespace Application.Dtos.Notification
 
         public bool IsRead { get; set; }
 
-        public DateTime SentAt { get; set; }
+        public DateTime SentAt { get; set; }= DateTime.UtcNow;
 
         public int TicketId { get; set; }
 

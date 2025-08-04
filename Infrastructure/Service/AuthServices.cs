@@ -33,8 +33,8 @@ namespace Infrastructure.Service
             new LdapUser
         {
                 UserID ="6",
-            Name = "emp3",
-            Password = "20041234",
+            Name = "ali",
+            Password = "ahmad2004#",
          //FullName = "محمد أحمد",
             Department = "قسم   IT ",
             Email = "m.ahmed@institute.edu",
@@ -43,7 +43,7 @@ namespace Infrastructure.Service
         new LdapUser
         {
             UserID ="7",
-            Name = "maint1",
+            Name = "",
             Password = "maint@456",
           //  FullName = "علي محمود",
             Department = "قسم الصيانة",

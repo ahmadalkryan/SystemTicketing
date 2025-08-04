@@ -106,13 +106,14 @@ public class TicketNotificationFilter : IAsyncActionFilter
 
     private async Task HandleTicketUpdate(TicketTraceDto ticketTraceDto)
     {
-        var originalTicket = await _dbContext.Tickets
-            .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.Id == ticketTraceDto.TicketId);
+         var ticketNumber = await _dbContext.Tickets
+             .Where(t => t.Id == ticketTraceDto.TicketId)
+                   .Select(t => t.TicketNumber)
+                           .FirstOrDefaultAsync();
 
         await _notificationService.SendNotification(
                 ticketTraceDto.UserId,
-                $" Ticket updated successfuly   #{originalTicket.TicketNumber}",
+                $" Ticket updated successfuly  #{ticketNumber}",
                 ticketTraceDto.TicketId
             );
 

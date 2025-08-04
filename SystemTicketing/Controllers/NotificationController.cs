@@ -51,6 +51,17 @@ namespace SystemTicketing.Controllers
 
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponse<NotificationDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> GetNotificationsByUserId([FromQuery] string userId)
+        {
+            var result = await _notificationService.GetNotificationByUserId(userId);
+            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
+
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<NotificationDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -86,16 +97,16 @@ namespace SystemTicketing.Controllers
         }
 
 
-        [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+        //[HttpGet]
+        //[ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
 
-        public async Task<IActionResult> IsReadNotification([FromQuery] int id)
-        {
-            var result = await _notificationService.IsReadNotification(id);
+        //public async Task<IActionResult> IsReadNotification([FromQuery] int id)
+        //{
+        //    var result = await _notificationService.IsReadNotification(id);
 
-            return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
+        //    return new RawJsonActionResult(_jsonFieldsSerializer.Serialize(new ApiResponse(true, "successfuly", StatusCodes.Status200OK, result), string.Empty));
 
-        }
+        //}
 
 
 

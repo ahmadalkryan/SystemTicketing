@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Application.Dtos.Notification;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,10 @@ namespace Infrastructure
         {
             _logger = logger;
         }
-
+        public async Task SendNotification(string userId, NotificationDto notification)
+        {
+            await Clients.User(userId).SendAsync("ReceiveNotification", notification);
+        }
         public override async Task OnConnectedAsync()
         {
             _logger.LogInformation($"Client connected: {Context.ConnectionId}");

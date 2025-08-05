@@ -1,5 +1,6 @@
-Maintenance System Ticketing
+<img width="4000" height="1518" alt="deepseek_mermaid_20250805_ffb114" src="https://github.com/user-attachments/assets/938ac23e-57dc-4c90-a5d2-783b5041e8c6" />Maintenance System Ticketing
 
+![Uploading deepseek_mermaid_20250805_ffb114.png…]()
 
 A comprehensive maintenance ticket management system designed for educational institutions, featuring LDAP integration, real-time notifications, and role-based dashboards.
 

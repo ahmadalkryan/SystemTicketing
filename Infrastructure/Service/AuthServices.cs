@@ -34,7 +34,7 @@ namespace Infrastructure.Service
         {
                 UserID ="6",
             Name = "ali",
-            Password = "ahmad2004#",
+            Password = "ahmad200$",
          //FullName = "محمد أحمد",
             Department = "قسم   IT ",
             Email = "m.ahmed@institute.edu",

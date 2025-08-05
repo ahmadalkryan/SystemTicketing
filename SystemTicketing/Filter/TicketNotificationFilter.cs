@@ -98,7 +98,7 @@ public class TicketNotificationFilter : IAsyncActionFilter
         {
             await _notificationService.SendNotification(
                 manager,
-                $"Ticket created successfuly : #{ticketDto.TicketNumber}",
+                $"Ticket created successfuly :TicketNumber #{ticketDto.TicketNumber} TicketId #{ticketDto.Id} ",
                 ticketDto.Id
             );
         }
@@ -113,7 +113,7 @@ public class TicketNotificationFilter : IAsyncActionFilter
 
         await _notificationService.SendNotification(
                 ticketTraceDto.UserId,
-                $" Ticket updated successfuly  #{ticketNumber}",
+                $" Ticket updated successfuly  #{ticketNumber} TicketTrace #{ticketTraceDto.Id}",
                 ticketTraceDto.TicketId
             );
 

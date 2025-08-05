@@ -32,69 +32,31 @@ namespace Infrastructure.Seeds
             }
 
 
-            if (!_context.Roles.Any())
-            {
-                var roles = new List<Role>
-                {
+            //if (!_context.Roles.Any())
+            //{
+            //    var roles = new List<Role>
+            //    {
                     
-                    new Role
-                    {
-                        Id="1",
-                        Name="Employee"
-                    },
-                    new Role
-                    {
-                        Id="2",
-                        Name ="Maintenance"
-                    },
-                    new Role
-                    {
-                        Id="3",
-                        Name ="Admin"
-                    }
-                };
+            //        new Role
+            //        {
+            //            Id="1",
+            //            Name="Employee"
+            //        },
+            //        new Role
+            //        {
+            //            Id="2",
+            //            Name ="Maintenance"
+            //        },
+            //        new Role
+            //        {
+            //            Id="3",
+            //            Name ="Admin"
+            //        }
+            //    };
 
-                _context.Roles.AddRange(roles);
-                shouldSave=true;
-            }
-
-
-            if (shouldSave)
-            {
-                shouldSave = false;
-                _context.SaveChanges();
-            }
-
-
-            // 2. Seed TicketStatuses
-            if (!_context.TicketStatuses.Any())
-            {
-                _context.TicketStatuses.AddRange(
-                    new TicketStatus { StatusName =TicketStatusEnum.Pending },
-                    new TicketStatus { StatusName = TicketStatusEnum.New },
-                    new TicketStatus { StatusName = TicketStatusEnum.Refund },
-                    new TicketStatus { StatusName = TicketStatusEnum.Complete}
-                );
-                shouldSave = true;
-            }
-
-            if (shouldSave)
-            {
-                shouldSave = false;
-                _context.SaveChanges();
-            }
-
-            if (!_context.DeviceCategories.Any())
-            {
-                _context.DeviceCategories.AddRange(
-                    new DeviceCategory { CategoryName = "Laptop", Abbreviation = "LT" },
-                    new DeviceCategory { CategoryName = "Desktop", Abbreviation = "DT" },
-                    new DeviceCategory { CategoryName = "Printer", Abbreviation = "PR" },
-                    new DeviceCategory { CategoryName = "Server", Abbreviation = "SV" },
-                    new DeviceCategory { CategoryName ="Projector" , Abbreviation ="PRJ"}
-                );
-                shouldSave = true;
-            }
+            //    _context.Roles.AddRange(roles);
+            //    shouldSave=true;
+            //}
 
 
             if (shouldSave)
@@ -103,76 +65,114 @@ namespace Infrastructure.Seeds
                 _context.SaveChanges();
             }
 
-            if (!_context.Users.Any())
-            {
-                var users = new List<User>
-    {
-        new User {
-            UserId ="1",
-            Name = "Admin User",
-            Department = "IT",
-            Email = "admin@example.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("Adm23")
-        },
-        new User {
-            UserId ="2",
-            Name = "Tech Staff",
-            Department = "Maintenance",
-            Email = "tech@example.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("Tec56")
-        },
 
-        new User {
-            UserId = "3",
-            Name = "End User",
-            Department = "Sales",
-            Email = "user@example.com",
-            Password = BCrypt.Net.BCrypt.HashPassword("Us789")
-        }
-    };
-                _context.Users.AddRange(users);
-                shouldSave = true;
+            //// 2. Seed TicketStatuses
+            //if (!_context.TicketStatuses.Any())
+            //{
+            //    _context.TicketStatuses.AddRange(
+            //        new TicketStatus { StatusName =TicketStatusEnum.Pending },
+            //        new TicketStatus { StatusName = TicketStatusEnum.New },
+            //        new TicketStatus { StatusName = TicketStatusEnum.Refund },
+            //        new TicketStatus { StatusName = TicketStatusEnum.Complete}
+            //    );
+            //    shouldSave = true;
+            //}
+
+            //if (shouldSave)
+            //{
+            //    shouldSave = false;
+            //    _context.SaveChanges();
+            //}
+
+    //        if (!_context.DeviceCategories.Any())
+    //        {
+    //            _context.DeviceCategories.AddRange(
+    //                new DeviceCategory { CategoryName = "Laptop", Abbreviation = "LT" },
+    //                new DeviceCategory { CategoryName = "Desktop", Abbreviation = "DT" },
+    //                new DeviceCategory { CategoryName = "Printer", Abbreviation = "PR" },
+    //                new DeviceCategory { CategoryName = "Server", Abbreviation = "SV" },
+    //                new DeviceCategory { CategoryName ="Projector" , Abbreviation ="PRJ"}
+    //            );
+    //            shouldSave = true;
+    //        }
+
+
+    //        if (shouldSave)
+    //        {
+    //            shouldSave = false;
+    //            _context.SaveChanges();
+    //        }
+
+    //        if (!_context.Users.Any())
+    //        {
+    //            var users = new List<User>
+    //{
+    //    new User {
+    //        UserId ="1",
+    //        Name = "Admin User",
+    //        Department = "IT",
+    //        Email = "admin@example.com",
+    //        Password = BCrypt.Net.BCrypt.HashPassword("Adm23")
+    //    },
+    //    new User {
+    //        UserId ="2",
+    //        Name = "Tech Staff",
+    //        Department = "Maintenance",
+    //        Email = "tech@example.com",
+    //        Password = BCrypt.Net.BCrypt.HashPassword("Tec56")
+    //    },
+
+    //    new User {
+    //        UserId = "3",
+    //        Name = "End User",
+    //        Department = "Sales",
+    //        Email = "user@example.com",
+    //        Password = BCrypt.Net.BCrypt.HashPassword("Us789")
+    //    }
+    //};
+    //            _context.Users.AddRange(users);
+    //            shouldSave = true;
                 
                
-            }
-            if (shouldSave)
-            {
-                _context.SaveChanges();
-                shouldSave = false;
-            }
+    //        }
+    //        if (shouldSave)
+    //        {
+    //            _context.SaveChanges();
+    //            shouldSave = false;
+    //        }
 
 
 
-            //user Role 
-            if (!_context.UserRoles.Any())
-            {
-                _context.UserRoles.AddRange(
+    //        //user Role 
+    //        if (!_context.UserRoles.Any())
+    //        {
+    //            _context.UserRoles.AddRange(
 
-                    new UserRole
-                    {
-                        UserId = "1",
-                        RoleId = "1",
-                    },
-                    new UserRole
-                    {
-                        UserId = "2",
-                        RoleId = "2",
-                    },
-                    new UserRole
-                    {
-                        UserId = "3",
-                        RoleId = "3",
-                    }
+    //                new UserRole
+    //                {
+    //                    UserId = "1",
+    //                    RoleId = "1",
+    //                },
+    //                new UserRole
+    //                {
+    //                    UserId = "2",
+    //                    RoleId = "2",
+    //                },
+    //                new UserRole
+    //                {
+    //                    UserId = "3",
+    //                    RoleId = "3",
+    //                }
 
 
-                    );
-                shouldSave = true;
-            }
-            if (shouldSave)
-            {
-                _context.SaveChanges();
-                shouldSave = false;
-            }
+    //                );
+    //            shouldSave = true;
+    //        }
+    //        if (shouldSave)
+    //        {
+    //            _context.SaveChanges();
+    //            shouldSave = false;
+    //        }
 
 
 

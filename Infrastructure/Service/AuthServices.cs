@@ -22,32 +22,32 @@ namespace Infrastructure.Service
         {
             new LdapUser
         {
-                UserID ="5",
-            Name = "emp1",
+                UserID ="1",
+            Name = "ahmad.alkryan",
             Password = "ahmad2004@",
          //FullName = "محمد أحمد",
-            Department = "قسم الموارد البشرية",
-            Email = "m.ahmed@institute.edu",
+            Department = "IT",
+            Email = "ahmad.alkryan@hiast.edu.sy",
            // Role = "Employee"
         },
             new LdapUser
         {
-                UserID ="6",
-            Name = "ali",
-            Password = "ahmad200$",
+                UserID ="2",
+            Name = "anas.nofal",
+            Password = "anas.nofal@",
          //FullName = "محمد أحمد",
-            Department = "قسم   IT ",
-            Email = "m.ahmed@institute.edu",
+            Department = "IT",
+            Email = "anas.nofal@hiast.edu.sy",
            // Role = "Employee"
         },
         new LdapUser
         {
-            UserID ="7",
-            Name = "",
-            Password = "maint@456",
+            UserID ="3",
+            Name = "ali.allan",
+            Password = "ali.allan@",
           //  FullName = "علي محمود",
-            Department = "قسم الصيانة",
-            Email = "a.mahmoud@institute.edu",
+            Department = "IT",
+            Email = "ali.allan@hiast.edu.sy",
          //   Role = "MaintenanceManager"
         },
          new LdapUser

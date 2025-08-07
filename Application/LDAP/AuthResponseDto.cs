@@ -9,7 +9,16 @@ namespace Application.LDAP
 {
     public class AuthResponseDto
     {
-
+        public class LdapUserDto
+        {
+            public string UserID { get; set; }
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; } // لا يتم تخزينها فعلياً، فقط للإشارة
+            public string Department { get; set; }
+            public string Dn { get; set; }
+            // يمكنك إضافة خصائص أخرى حسب بنية LDAP الخاصة بك
+        }
         [Required]
             public string Token { get; set; }
         [Required]

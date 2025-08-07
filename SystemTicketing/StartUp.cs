@@ -141,10 +141,18 @@ namespace SystemTicketing
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My_API V1");
             });
 
-            // 7. معالجة الاستثناءات العالمية (بعد Swagger)
+            
+
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+
+
+
+
+
             // 8. Endpoints
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

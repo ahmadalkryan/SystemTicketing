@@ -73,9 +73,9 @@ namespace Infrastructure
             services.AddScoped<ITokenService, TokenService>();
  
 
-           
+           services.AddScoped<ILdapAuthenticationService, LdapAuthenticationService>();
 
-            
+
             return services;
         }
 

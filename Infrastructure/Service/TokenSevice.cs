@@ -76,7 +76,7 @@ namespace Infrastructure
             //var token = tokenHandler.CreateToken(tokenDescriptor);
             var token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
-            // 5. إرجاع التوكن كسلسلة
+            
             return token;
         }
 

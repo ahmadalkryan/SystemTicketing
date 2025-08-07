@@ -67,8 +67,12 @@ namespace SystemTicketing.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<TicketTraceDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+
+
         [ServiceFilter(typeof(TicketNotificationFilter))]
-        public async Task<IActionResult> InsertTicketTrace([FromBody]CreateTicketTraceDto createTicketTraceDto)
+        public async Task<IActionResult> InsertTicketTrace([FromForm]CreateTicketTraceDto createTicketTraceDto)
+
+
         {
             var result = await _ticketTraceService.CreateTicket(createTicketTraceDto);
 

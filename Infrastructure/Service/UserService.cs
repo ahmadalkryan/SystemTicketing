@@ -24,10 +24,6 @@ namespace Infrastructure.Service
              
         }
 
-        //public async Task<UserDto> DeleteUser(string UserId)
-        //{
-
-        //}
 
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
@@ -54,9 +50,5 @@ namespace Infrastructure.Service
             return _mapper.Map<UserDto>(us);
         }
 
-        //Task<User> IUserService.GetUserByEmail(string email)
-        //{
-        //    return GetUserByEmail(email);
-        //}
     }
 }

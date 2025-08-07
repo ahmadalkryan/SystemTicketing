@@ -17,7 +17,7 @@ namespace Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services,ConfigurationBinder configuration)
         {
 
             
@@ -29,10 +29,10 @@ namespace Application
             services.AddAutoMapper(typeof(RoleProfile).Assembly);
             services.AddAutoMapper(typeof(UserProfile).Assembly);
             services.AddAutoMapper(typeof(UserRoleProfile).Assembly);
+            services.Configure<LdapSettings>(configuration.GetSection("LdapSettings"));
+            // services.AddScoped<TokenService>();
+            // services.AddScoped<AuthenticationService>();
 
-           // services.AddScoped<TokenService>();
-           // services.AddScoped<AuthenticationService>();
-            
 
 
 

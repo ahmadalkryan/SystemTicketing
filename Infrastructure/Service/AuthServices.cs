@@ -69,20 +69,6 @@ namespace Infrastructure.Service
             x.Name == loginDto.Name &&
             x.Password == loginDto.Password);
         }
-            //var ldap = _ldapUsers.FirstOrDefault(x => x.Name == loginnDto.username && x.Password == loginnDto.password);
-
-            //if (ldap == null)
-            //{
-            //    return false;
-
-            //}
-
-
-
-
-            //return true;
-
-
 
         
         public LdapUser GetUser(LoginDto loginDto)
@@ -93,14 +79,6 @@ namespace Infrastructure.Service
              x.Password == loginDto.Password);
 
             return user ?? throw new Exception("User not found");
-
-            //        LdapUser ldapUser= _ldapUsers.Where(x => x.Name == loginnDto.username && 
-            //        x.Password == loginnDto.password).FirstOrDefault()!;
-            //if(ldapUser == null)
-            // {
-            //     throw new Exception();
-            // }
-            //else { return ldapUser; }
 
 
         }
